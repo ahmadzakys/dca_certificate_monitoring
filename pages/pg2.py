@@ -520,7 +520,7 @@ def update_charts(data, value_tb, value_ba, value_cts):
     col = list(col)
 
     no_date_cts = ['NO', 'NAMA KAPAL', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
-            '3/6/12 BULAN', ]
+            '3/6/12 BULAN', 'SPESIAL SURVEY']
     col = [x for x in col if x not in no_date_cts]
 
     ### apply datetime to selected variable
