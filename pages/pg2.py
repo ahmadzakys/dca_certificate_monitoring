@@ -333,7 +333,7 @@ def update_charts(data, value_tb, value_ba, value_cts):
     col = df_tb.columns
     col = list(col)
 
-    no_date = ['NO', 'NAMA KAPAL', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
+    no_date = ['NO', 'NAMA KAPAL', 'NAMA PEMILIK', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
             '3/6/12 BULAN', ]
     col = [x for x in col if x not in no_date]
 
@@ -342,11 +342,12 @@ def update_charts(data, value_tb, value_ba, value_cts):
     df_tb[col] = df_tb[col].apply(pd.to_datetime, format='%d %B %Y')
 
     ### remove unnecessary variable
-    col_del = ['NO', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)',
+    col_del = ['NO', 'NAMA PEMILIK', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)',
             '3/6/12 BULAN', 'NOTA DINAS 1', 'NOTA DINAS 2']
     col_stay = [x for x in df_tb.columns if x not in col_del]
 
     ### set 'NAMA KAPAL' as index
+    df_tb = df_tb[df_tb['NAMA PEMILIK'] == 'PT. ABL']
     df_tb = df_tb[col_stay].set_index('NAMA KAPAL')
 
     ### making new dataframe for remaining days only
@@ -427,7 +428,7 @@ def update_charts(data, value_tb, value_ba, value_cts):
 
     col_ba = list(col_ba)
 
-    no_date = ['NO', 'NAMA KAPAL', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
+    no_date = ['NO', 'NAMA KAPAL', 'NAMA PEMILIK', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
             '3/6/12 BULAN', ]
     col_ba = [x for x in col_ba if x not in no_date]
 
@@ -436,11 +437,12 @@ def update_charts(data, value_tb, value_ba, value_cts):
     df_ba[col_ba] = df_ba[col_ba].apply(pd.to_datetime, format='%d %B %Y')
 
     ### remove unnecessary variable
-    col_del_ba = ['NO', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)',
+    col_del_ba = ['NO', 'NAMA PEMILIK','YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)',
                   '3/6/12 BULAN', 'NOTA DINAS 1', 'NOTA DINAS 2']
     col_stay_ba = [x for x in df_ba.columns if x not in col_del_ba]
 
     ### set 'NAMA KAPAL' as index
+    df_ba = df_ba[df_ba['NAMA PEMILIK'] == 'PT. ABL']
     df_ba = df_ba[col_stay_ba].set_index('NAMA KAPAL')
 
     ### making new dataframe for remaining days only
@@ -519,7 +521,7 @@ def update_charts(data, value_tb, value_ba, value_cts):
     col = df_cts.columns
     col = list(col)
 
-    no_date_cts = ['NO', 'NAMA KAPAL', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
+    no_date_cts = ['NO', 'NAMA KAPAL', 'NAMA PEMILIK', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
             '3/6/12 BULAN', 'SPESIAL SURVEY']
     col = [x for x in col if x not in no_date_cts]
 
@@ -528,13 +530,14 @@ def update_charts(data, value_tb, value_ba, value_cts):
     df_cts[col] = df_cts[col].apply(pd.to_datetime, format='%d %B %Y')
 
     ### remove unnecessary variable
-    col_del_cts = ['NO', 'INTERMEDATE SURVEY',	'SPESIAL SURVEY',	"INTERMEDATE SURVEY2",	'SPESIAL SURVEY2',	'INTERMEDATE SURVEY3',
+    col_del_cts = ['NO', 'NAMA PEMILIK','INTERMEDATE SURVEY',	'SPESIAL SURVEY',	"INTERMEDATE SURVEY2",	'SPESIAL SURVEY2',	'INTERMEDATE SURVEY3',
             'SPESIAL SURVEY3', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)',
             '3/6/12 BULAN', 'NEXT RENEWAL SYABANDAR','NOTA DINAS 1', 'NOTA DINAS 2',
             'NEXT ANNUAL', 'REMOVAL OF WRECKS1', 'HULL & MACHINE', 'CERTIFIACATE DOCUMENT OF COMPLAINCE', ]
     col_stay_cts = [x for x in df_cts.columns if x not in col_del_cts]
 
     ### set 'NAMA KAPAL' as index
+    df_cts = df_cts[df_cts['NAMA PEMILIK'] == 'PT. ABL']
     df_cts = df_cts[col_stay_cts].set_index('NAMA KAPAL')
 
     ### making new dataframe for remaining days only
