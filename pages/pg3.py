@@ -2700,25 +2700,9 @@ def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
             bar_plot(count_insurance_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), insurance_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
             bar_plot(count_lsa_ffa_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), lsa_ffa_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
             bar_plot(count_health_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), health_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
-            bar_plot(count_others_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), others_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),
+            bar_plot(count_others_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), others_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),      
             
-            
-            
-            
-    
-    
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-
+                      
 ######################
 # Plot Function
 ######################
@@ -2743,16 +2727,16 @@ def nat_tonnage_classify(df):
     
     else:
         for i in range(len(df['Nationality & Tonnage Remain Days'])) :
-            if df['Nationality & Tonnage Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i],
-                                        'Owner': df.iloc[:,1][i],
-                                        'Remaining Days': df.loc[:,'Nationality & Tonnage Remain Days2'][i],
-                                        'Due Date': df.loc[:,'Nationality & Tonnage'][i]}, ignore_index=True)
+            if df['Nationality & Tonnage Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i],
+                                        'Owner': df.iloc[:,1].iloc[i],
+                                        'Remaining Days': df.loc[:,'Nationality & Tonnage Remain Days2'].iloc[i],
+                                        'Due Date': df.loc[:,'Nationality & Tonnage'].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i],
-                                'Owner': df.iloc[:,1][i],
-                                'Remaining Days': df.loc[:,'Nationality & Tonnage Remain Days2'][i],
-                                'Due Date': df.loc[:,'Nationality & Tonnage'][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i],
+                                'Owner': df.iloc[:,1].iloc[i],
+                                'Remaining Days': df.loc[:,'Nationality & Tonnage Remain Days2'].iloc[i],
+                                'Due Date': df.loc[:,'Nationality & Tonnage'].iloc[i]}, ignore_index=True)
     if len(alerts)>0:
         alerts.sort_values(by='Due Date', inplace=True)
     else:
@@ -2775,12 +2759,12 @@ def count_nat_tonnage_classify(df):
     
     else:
         for i in range(len(df['Nationality & Tonnage Remain Days'])) :
-            if df['Nationality & Tonnage Remain Days'][i] < 0 :
-                expired = expired.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
-            elif df['Nationality & Tonnage Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+            if df['Nationality & Tonnage Remain Days'].iloc[i] < 0 :
+                expired = expired.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
+            elif df['Nationality & Tonnage Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
     return([len(ok), len(alerts), len(expired)])
 
 ## 2. 'SOLAS Remain Days'
@@ -2804,16 +2788,16 @@ def solas_classify(df):
     
     else:
         for i in range(len(df['SOLAS Remain Days'])) :
-            if df['SOLAS Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i],
-                                        'Owner': df.iloc[:,1][i],
-                                        'Remaining Days': df.loc[:,'SOLAS Remain Days2'][i],
-                                        'Due Date': df.loc[:,'SOLAS'][i]}, ignore_index=True)
+            if df['SOLAS Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i],
+                                        'Owner': df.iloc[:,1].iloc[i],
+                                        'Remaining Days': df.loc[:,'SOLAS Remain Days2'].iloc[i],
+                                        'Due Date': df.loc[:,'SOLAS'].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i],
-                                'Owner': df.iloc[:,1][i],
-                                'Remaining Days': df.loc[:,'SOLAS Remain Days2'][i],
-                                'Due Date': df.loc[:,'SOLAS'][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i],
+                                'Owner': df.iloc[:,1].iloc[i],
+                                'Remaining Days': df.loc[:,'SOLAS Remain Days2'].iloc[i],
+                                'Due Date': df.loc[:,'SOLAS'].iloc[i]}, ignore_index=True)
     if len(alerts)>0:
         alerts.sort_values(by='Due Date', inplace=True)
     else:
@@ -2836,12 +2820,12 @@ def count_solas_classify(df):
     
     else:
         for i in range(len(df['SOLAS Remain Days'])) :
-            if df['SOLAS Remain Days'][i] < 0 :
-                expired = expired.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
-            elif df['SOLAS Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+            if df['SOLAS Remain Days'].iloc[i] < 0 :
+                expired = expired.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
+            elif df['SOLAS Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
     return([len(ok), len(alerts), len(expired)])
 
 ## 3. 'Pollution Remain Days'
@@ -2865,16 +2849,16 @@ def pollution_classify(df):
     
     else:
         for i in range(len(df['Pollution Remain Days'])) :
-            if df['Pollution Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i],
-                                        'Owner': df.iloc[:,1][i],
-                                        'Remaining Days': df.loc[:,'Pollution Remain Days2'][i],
-                                        'Due Date': df.loc[:,'Pollution'][i]}, ignore_index=True)
+            if df['Pollution Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i],
+                                        'Owner': df.iloc[:,1].iloc[i],
+                                        'Remaining Days': df.loc[:,'Pollution Remain Days2'].iloc[i],
+                                        'Due Date': df.loc[:,'Pollution'].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i],
-                                'Owner': df.iloc[:,1][i],
-                                'Remaining Days': df.loc[:,'Pollution Remain Days2'][i],
-                                'Due Date': df.loc[:,'Pollution'][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i],
+                                'Owner': df.iloc[:,1].iloc[i],
+                                'Remaining Days': df.loc[:,'Pollution Remain Days2'].iloc[i],
+                                'Due Date': df.loc[:,'Pollution'].iloc[i]}, ignore_index=True)
     if len(alerts)>0:
         alerts.sort_values(by='Due Date', inplace=True)
     else:
@@ -2897,12 +2881,12 @@ def count_pollution_classify(df):
     
     else:
         for i in range(len(df['Pollution Remain Days'])) :
-            if df['Pollution Remain Days'][i] < 0 :
-                expired = expired.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
-            elif df['Pollution Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+            if df['Pollution Remain Days'].iloc[i] < 0 :
+                expired = expired.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
+            elif df['Pollution Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
     return([len(ok), len(alerts), len(expired)])
 
 
@@ -2927,16 +2911,16 @@ def class_classify(df):
     
     else:
         for i in range(len(df['Class Remain Days'])) :
-            if df['Class Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i],
-                                        'Owner': df.iloc[:,1][i],
-                                        'Remaining Days': df.loc[:,'Class Remain Days2'][i],
-                                        'Due Date': df.loc[:,'Class'][i]}, ignore_index=True)
+            if df['Class Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i],
+                                        'Owner': df.iloc[:,1].iloc[i],
+                                        'Remaining Days': df.loc[:,'Class Remain Days2'].iloc[i],
+                                        'Due Date': df.loc[:,'Class'].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i],
-                                'Owner': df.iloc[:,1][i],
-                                'Remaining Days': df.loc[:,'Class Remain Days2'][i],
-                                'Due Date': df.loc[:,'Class'][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i],
+                                'Owner': df.iloc[:,1].iloc[i],
+                                'Remaining Days': df.loc[:,'Class Remain Days2'].iloc[i],
+                                'Due Date': df.loc[:,'Class'].iloc[i]}, ignore_index=True)
     
     if len(alerts)>0:
         alerts.sort_values(by='Due Date', inplace=True)
@@ -2960,12 +2944,12 @@ def count_class_classify(df):
     
     else:
         for i in range(len(df['Class Remain Days'])) :
-            if df['Class Remain Days'][i] < 0 :
-                expired = expired.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
-            elif df['Class Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+            if df['Class Remain Days'].iloc[i] < 0 :
+                expired = expired.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
+            elif df['Class Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
     return([len(ok), len(alerts), len(expired)])
 
 ## 5. 'Insurance Remain Days'
@@ -2989,16 +2973,16 @@ def insurance_classify(df):
     
     else:
         for i in range(len(df['Insurance Remain Days'])) :
-            if df['Insurance Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i],
-                                        'Owner': df.iloc[:,1][i],
-                                        'Remaining Days': df.loc[:,'Insurance Remain Days2'][i],
-                                        'Due Date': df.loc[:,'Insurance'][i]}, ignore_index=True)
+            if df['Insurance Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i],
+                                        'Owner': df.iloc[:,1].iloc[i],
+                                        'Remaining Days': df.loc[:,'Insurance Remain Days2'].iloc[i],
+                                        'Due Date': df.loc[:,'Insurance'].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i],
-                                'Owner': df.iloc[:,1][i],
-                                'Remaining Days': df.loc[:,'Insurance Remain Days2'][i],
-                                'Due Date': df.loc[:,'Insurance'][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i],
+                                'Owner': df.iloc[:,1].iloc[i],
+                                'Remaining Days': df.loc[:,'Insurance Remain Days2'].iloc[i],
+                                'Due Date': df.loc[:,'Insurance'].iloc[i]}, ignore_index=True)
     
     if len(alerts)>0:
         alerts.sort_values(by='Due Date', inplace=True)
@@ -3022,12 +3006,12 @@ def count_insurance_classify(df):
     
     else:
         for i in range(len(df['Insurance Remain Days'])) :
-            if df['Insurance Remain Days'][i] < 0 :
-                expired = expired.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
-            elif df['Insurance Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+            if df['Insurance Remain Days'].iloc[i] < 0 :
+                expired = expired.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
+            elif df['Insurance Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
     return([len(ok), len(alerts), len(expired)])
 
 ## 6. 'LSA & FFA Remain Days'
@@ -3051,16 +3035,16 @@ def lsa_ffa_classify(df):
     
     else:
         for i in range(len(df['LSA & FFA Remain Days'])) :
-            if df['LSA & FFA Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i],
-                                        'Owner': df.iloc[:,1][i],
-                                        'Remaining Days': df.loc[:,'LSA & FFA Remain Days2'][i],
-                                        'Due Date': df.loc[:,'LSA & FFA'][i]}, ignore_index=True)
+            if df['LSA & FFA Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i],
+                                        'Owner': df.iloc[:,1].iloc[i],
+                                        'Remaining Days': df.loc[:,'LSA & FFA Remain Days2'].iloc[i],
+                                        'Due Date': df.loc[:,'LSA & FFA'].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i],
-                                'Owner': df.iloc[:,1][i],
-                                'Remaining Days': df.loc[:,'LSA & FFA Remain Days2'][i],
-                                'Due Date': df.loc[:,'LSA & FFA'][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i],
+                                'Owner': df.iloc[:,1].iloc[i],
+                                'Remaining Days': df.loc[:,'LSA & FFA Remain Days2'].iloc[i],
+                                'Due Date': df.loc[:,'LSA & FFA'].iloc[i]}, ignore_index=True)
     
     if len(alerts)>0:
         alerts.sort_values(by='Due Date', inplace=True)
@@ -3084,12 +3068,12 @@ def count_lsa_ffa_classify(df):
     
     else:
         for i in range(len(df['LSA & FFA Remain Days'])) :
-            if df['LSA & FFA Remain Days'][i] < 0 :
-                expired = expired.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
-            elif df['LSA & FFA Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+            if df['LSA & FFA Remain Days'].iloc[i] < 0 :
+                expired = expired.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
+            elif df['LSA & FFA Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
     return([len(ok), len(alerts), len(expired)])
 
 ## 7. 'Health Remain Days'
@@ -3113,16 +3097,16 @@ def health_classify(df):
     
     else:
         for i in range(len(df['Health Remain Days'])) :
-            if df['Health Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i],
-                                        'Owner': df.iloc[:,1][i],
-                                        'Remaining Days': df.loc[:,'Health Remain Days2'][i],
-                                        'Due Date': df.loc[:,'Health'][i]}, ignore_index=True)
+            if df['Health Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i],
+                                        'Owner': df.iloc[:,1].iloc[i],
+                                        'Remaining Days': df.loc[:,'Health Remain Days2'].iloc[i],
+                                        'Due Date': df.loc[:,'Health'].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i],
-                                'Owner': df.iloc[:,1][i],
-                                'Remaining Days': df.loc[:,'Health Remain Days2'][i],
-                                'Due Date': df.loc[:,'Health'][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i],
+                                'Owner': df.iloc[:,1].iloc[i],
+                                'Remaining Days': df.loc[:,'Health Remain Days2'].iloc[i],
+                                'Due Date': df.loc[:,'Health'].iloc[i]}, ignore_index=True)
     
     if len(alerts)>0:
         alerts.sort_values(by='Due Date', inplace=True)
@@ -3146,12 +3130,12 @@ def count_health_classify(df):
     
     else:
         for i in range(len(df['Health Remain Days'])) :
-            if df['Health Remain Days'][i] < 0 :
-                expired = expired.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
-            elif df['Health Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+            if df['Health Remain Days'].iloc[i] < 0 :
+                expired = expired.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
+            elif df['Health Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
     return([len(ok), len(alerts), len(expired)])
 
 ## 8. 'Others Remain Days'
@@ -3175,16 +3159,16 @@ def others_classify(df):
     
     else:
         for i in range(len(df['Others Remain Days'])) :
-            if df['Others Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i],
-                                        'Owner': df.iloc[:,1][i],
-                                        'Remaining Days': df.loc[:,'Others Remain Days2'][i],
-                                        'Due Date': df.loc[:,'Others'][i]}, ignore_index=True)
+            if df['Others Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i],
+                                        'Owner': df.iloc[:,1].iloc[i],
+                                        'Remaining Days': df.loc[:,'Others Remain Days2'].iloc[i],
+                                        'Due Date': df.loc[:,'Others'].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i],
-                                'Owner': df.iloc[:,1][i],
-                                'Remaining Days': df.loc[:,'Others Remain Days2'][i],
-                                'Due Date': df.loc[:,'Others'][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i],
+                                'Owner': df.iloc[:,1].iloc[i],
+                                'Remaining Days': df.loc[:,'Others Remain Days2'].iloc[i],
+                                'Due Date': df.loc[:,'Others'].iloc[i]}, ignore_index=True)
     
     if len(alerts)>0:
         alerts.sort_values(by='Due Date', inplace=True)
@@ -3208,12 +3192,12 @@ def count_others_classify(df):
     
     else:
         for i in range(len(df['Others Remain Days'])) :
-            if df['Others Remain Days'][i] < 0 :
-                expired = expired.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
-            elif df['Others Remain Days'][i] < 30 :
-                alerts = alerts.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+            if df['Others Remain Days'].iloc[i] < 0 :
+                expired = expired.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
+            elif df['Others Remain Days'].iloc[i] < 30 :
+                alerts = alerts.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
             else :
-                ok = ok.append({'Vessel': df.iloc[:,0][i]}, ignore_index=True)
+                ok = ok.append({'Vessel': df.iloc[:,0].iloc[i]}, ignore_index=True)
     return([len(ok), len(alerts), len(expired)])
 
 
