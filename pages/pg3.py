@@ -1437,7 +1437,7 @@ layout = html.Div([
                                     dbc.Col([
                                         dbc.Card([
                                             dbc.CardBody(dcc.Graph(id='others_ba_bar'))
-                                        ], color="light", outline=True, style={"height": 360, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                        ], color="light", outline=True, style={"height": 400, "margin-bottom": "5px", 'background':'#F1F4F4'}),
                                     ], xs=5),
                                     ###### OTHERS Alerts Table
                                     dbc.Col([
@@ -1467,7 +1467,7 @@ layout = html.Div([
                                                                                     tooltip_delay=0,
                                                                                     tooltip_duration=None
                                                                                     )))
-                                        ], color="light", outline=True, style={"height": 360, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                        ], color="light", outline=True, style={"height": 400, "margin-bottom": "5px", 'background':'#F1F4F4'}),
                                     ], xs=7),
                                 ], className="g-0 d-flex align-items-center")
                             ], xs=4)    
@@ -2252,7 +2252,7 @@ layout = html.Div([
                                     dbc.Col([
                                         dbc.Card([
                                             dbc.CardBody(dcc.Graph(id='others_cts_bar'))
-                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                        ], color="light", outline=True, style={"height": 370, "margin-bottom": "5px", 'background':'#F1F4F4'}),
                                     ], xs=5),
                                     ###### OTHERS Alerts Table
                                     dbc.Col([
@@ -2273,16 +2273,16 @@ layout = html.Div([
                                                                                     style_cell={'font-family':'Verdana',
                                                                                                 'fontSize': 13,
                                                                                                 'color':'#2a3f5f',},
-                                                                                    page_action="native",
-                                                                                    page_current= 0,
-                                                                                    page_size= 4,
+                                                                                    # page_action="native",
+                                                                                    # page_current= 0,
+                                                                                    # page_size= 4,
                                                                                     css=[{
                                                                                         'selector': '.dash-table-tooltip',
                                                                                         'rule': 'background-color: white; font-family: Verdana; color: #2a3f5f;'}],
                                                                                     tooltip_delay=0,
                                                                                     tooltip_duration=None
                                                                                     )))
-                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                        ], color="light", outline=True, style={"height": 370, "margin-bottom": "5px", 'background':'#F1F4F4'}),
                                     ], xs=7),
                                 ], className="g-0 d-flex align-items-center")
                             ], xs=4),
