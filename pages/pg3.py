@@ -29,17 +29,17 @@ layout = html.Div([
                         html.Div(dcc.Dropdown(
                             id='tugboat-company',
                             options=[
-                                {'label': 'PT. ABL', 'value': 'PT. ABL'},
+                                {'label': 'PT. DCA', 'value': 'PT. DCA'},
                                 {'label': 'PT. KSA', 'value': 'PT. KSA'},
                                 {'label': 'PT. DSM', 'value': 'PT. DSM'},
                                 {'label': 'PT. PSS', 'value': 'PT. PSS'},
                                 {'label': 'PT. THS', 'value': 'PT. THS'},
                                 {'label': 'PT. PST', 'value': 'PT. PST'},
                                 {'label': 'PT. SP', 'value': 'PT. SP'},
-                                {'label': 'PT. BMSLI', 'value': 'PT. BMSLI'},
+                                {'label': 'PT. BSML', 'value': 'PT. BSML'},
                                 {'label': 'PT. ASL', 'value': 'PT. ASL'},
                             ],
-                            value='PT. ABL',
+                            value='PT. DCA',
                             style={
                                 'width':'97.5%',
                                 'paddingLeft':'4%',
@@ -859,14 +859,14 @@ layout = html.Div([
                         html.Div(dcc.Dropdown(
                             id='barge-company',
                             options=[
-                                {'label': 'PT. ABL', 'value': 'PT. ABL'},
+                                {'label': 'PT. DCA', 'value': 'PT. DCA'},
                                 {'label': 'PT. KSA', 'value': 'PT. KSA'},
                                 {'label': 'PT. PSS', 'value': 'PT. PSS'},
                                 {'label': 'PT. THS', 'value': 'PT. THS'},
                                 {'label': 'PT. PST', 'value': 'PT. PST'},
                                 {'label': 'PT. ASL', 'value': 'PT. ASL'},
                             ],
-                            value='PT. ABL',
+                            value='PT. DCA',
                             style={
                                 'width':'97.5%',
                                 'paddingLeft':'4%',
@@ -1481,6 +1481,7 @@ layout = html.Div([
                             id='cts-company',
                             options=[
                                 {'label': 'PT. ABL', 'value': 'PT. ABL'},
+                                {'label': 'PT. PNTS', 'value': 'PT. PNTS'},
                             ],
                             value='PT. ABL',
                             style={

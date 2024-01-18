@@ -347,7 +347,7 @@ def update_charts(data, value_tb, value_ba, value_cts):
     col_stay = [x for x in df_tb.columns if x not in col_del]
 
     ### set 'NAMA KAPAL' as index
-    df_tb = df_tb[df_tb['NAMA PEMILIK'] == 'PT. ABL']
+    df_tb = df_tb[df_tb['NAMA PEMILIK'] == 'PT. DCA']
     df_tb = df_tb[col_stay].set_index('NAMA KAPAL')
 
     ### making new dataframe for remaining days only
@@ -442,7 +442,7 @@ def update_charts(data, value_tb, value_ba, value_cts):
     col_stay_ba = [x for x in df_ba.columns if x not in col_del_ba]
 
     ### set 'NAMA KAPAL' as index
-    df_ba = df_ba[df_ba['NAMA PEMILIK'] == 'PT. ABL']
+    df_ba = df_ba[df_ba['NAMA PEMILIK'] == 'PT. DCA']
     df_ba = df_ba[col_stay_ba].set_index('NAMA KAPAL')
 
     ### making new dataframe for remaining days only
