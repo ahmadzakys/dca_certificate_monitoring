@@ -22,6 +22,28 @@ layout = html.Div([
                 html.Br(),
                         html.P(children=html.Strong('MONITORING CERTIFICATE'), 
                                style={'textAlign': 'center', 'fontSize': 27, 'background-color':'#F1F4F4','color':'#242947','font-family':'Verdana'}),
+                html.Div(dcc.Dropdown(
+                            id='company-name',
+                            options=[
+                                {'label': 'PT. DCA', 'value': 'PT. DCA'},
+                                {'label': 'PT. KSA', 'value': 'PT. KSA'},
+                                {'label': 'PT. DSM', 'value': 'PT. DSM'},
+                                {'label': 'PT. PSS', 'value': 'PT. PSS'},
+                                {'label': 'PT. THS', 'value': 'PT. THS'},
+                                {'label': 'PT. PST', 'value': 'PT. PST'},
+                                {'label': 'PT. SP', 'value': 'PT. SP'},
+                                {'label': 'PT. BSML', 'value': 'PT. BSML'},
+                                {'label': 'PT. ASL', 'value': 'PT. ASL'},
+                                {'label': 'PT. ABL', 'value': 'PT. ABL'},
+                                {'label': 'PT. PNTS', 'value': 'PT. PNTS'},
+                            ],
+                            value='PT. DCA',
+                            style={
+                                'width':'97.5%',
+                                'paddingLeft':'4%',
+                                }
+                        )),
+                html.Br(),
                 dbc.Row([
                     html.Div(dash_table.DataTable(
                         id="data_dashboard",
@@ -120,9 +142,12 @@ layout = html.Div([
     Output('data_dashboard', 'data'),
     # Output('data_dashboard', 'tooltip_data'),
     ],
-    Input('store', 'data')
+    [
+    Input('store', 'data'),
+    Input('company-name', 'value'),
+    ]
 )
-def update_charts(data):
+def update_charts(data, value_company):
     ######################
     # Pre Processing
     ######################
@@ -148,7 +173,8 @@ def update_charts(data):
     col_stay = [x for x in df_tb.columns if x not in col_del]
 
     ### set 'NAMA KAPAL' as index
-    df_tb = df_tb[df_tb['NAMA PEMILIK'] == 'PT. DCA']
+    # df_tb = df_tb[df_tb['NAMA PEMILIK'] == 'PT. DCA']
+    df_tb_c = df_tb.copy()
     df_tb = df_tb[col_stay].set_index('NAMA KAPAL')
 
     ### making new dataframe for remaining days only
@@ -169,6 +195,9 @@ def update_charts(data):
                                                 '❌' if x < 0 else (
                                                     '⚠️' if x < 30 else(
                                                         '🔲' if pd.isna(x) else '✔️')))
+    
+    df_tb_status = df_tb_status.reset_index()
+    df_tb_status['NAMA PEMILIK'] = df_tb_c['NAMA PEMILIK']
     
     ######################
     # Barge
@@ -194,7 +223,8 @@ def update_charts(data):
     col_stay_ba = [x for x in df_ba.columns if x not in col_del_ba]
 
     ### set 'NAMA KAPAL' as index
-    df_ba = df_ba[df_ba['NAMA PEMILIK'] == 'PT. DCA']
+    # df_ba = df_ba[df_ba['NAMA PEMILIK'] == 'PT. DCA']
+    df_ba_c = df_ba.copy()
     df_ba = df_ba[col_stay_ba].set_index('NAMA KAPAL')
 
     ### making new dataframe for remaining days only
@@ -213,6 +243,8 @@ def update_charts(data):
                                                 '❌' if x < 0 else (
                                                     '⚠️' if x < 30 else(
                                                         '🔲' if pd.isna(x) else '✔️')))
+    df_ba_status = df_ba_status.reset_index()
+    df_ba_status['NAMA PEMILIK'] = df_ba_c['NAMA PEMILIK']
     
     ######################
     # CTS
@@ -239,7 +271,8 @@ def update_charts(data):
     col_stay_cts = [x for x in df_cts.columns if x not in col_del_cts]
 
     ### set 'NAMA KAPAL' as index
-    df_cts = df_cts[df_cts['NAMA PEMILIK'] == 'PT. ABL']
+    # df_cts = df_cts[df_cts['NAMA PEMILIK'] == 'PT. ABL']
+    df_cts_c = df_cts.copy()
     df_cts = df_cts[col_stay_cts].set_index('NAMA KAPAL')
 
     ### making new dataframe for remaining days only
@@ -261,8 +294,13 @@ def update_charts(data):
                                                 '❌' if x < 0 else (
                                                     '⚠️' if x < 30 else(
                                                         '🔲' if pd.isna(x) else '✔️')))
+    df_cts_status = df_cts_status.reset_index()
+    df_cts_status['NAMA PEMILIK'] = df_cts_c['NAMA PEMILIK']
     
-    df_tb_simple = df_tb_status[['SURAT LAUT/ PAS TAHUNAN (CERTIFICATE OF NATIONALITY)',
+    df_tb_simple = df_tb_status[[
+                                'NAMA KAPAL',
+                                'NAMA PEMILIK',
+                                'SURAT LAUT/ PAS TAHUNAN (CERTIFICATE OF NATIONALITY)',
                                 'SERT. KESELAMATAN KONSTRUKSI KAPAL (CERTIFICATE OF SHIP SAFETY CONSTRUCTION)',
                                 'SERT. PENCEGAHAN PENCEMARAN MINYAK (CERTIFICATE OF INTERNATIONAL OIL POLLUTION PREVENTION (IOPP))',
                                 'NEXT ANNUAL',
@@ -282,7 +320,10 @@ def update_charts(data):
         'Others':'OTHERS',
     }, inplace=True)
 
-    df_ba_simple = df_ba_status[['SURAT LAUT/ PAS TAHUNAN (CERTIFICATE OF NATIONALITY)',
+    df_ba_simple = df_ba_status[[
+                                'NAMA KAPAL',
+                                'NAMA PEMILIK',
+                                'SURAT LAUT/ PAS TAHUNAN (CERTIFICATE OF NATIONALITY)',
                                 'SERT. KESELAMATAN KONSTRUKSI KAPAL (CERTIFICATE OF SHIP SAFETY CONSTRUCTION)',
                                 'NEXT ANNUAL',
                                 'SERTIFIKAT ASURANSI (CERTIFICATE OF INSURANCE)',
@@ -298,7 +339,10 @@ def update_charts(data):
         'Others':'OTHERS',
     }, inplace=True)
 
-    df_cts_simple = df_cts_status[['SURAT LAUT/ PAS TAHUNAN (CERTIFICATE OF NATIONALITY)',
+    df_cts_simple = df_cts_status[[
+                                'NAMA KAPAL',
+                                'NAMA PEMILIK',
+                                'SURAT LAUT/ PAS TAHUNAN (CERTIFICATE OF NATIONALITY)',
                                 'SERT. KESELAMATAN KONSTRUKSI KAPAL (CERTIFICATE OF SHIP SAFETY CONSTRUCTION)',
                                 'SERT. PENCEGAHAN PENCEMARAN MINYAK (CERTIFICATE OF INTERNATIONAL OIL POLLUTION PREVENTION (IOPP))',
                                 'SERT. GARIS MUAT INTERNASIONAL (CERTIFICATE OF LOAD LINE)',
@@ -325,7 +369,7 @@ def update_charts(data):
     data = data.reset_index()
         
     ## DataFrame to dash table
-    data_dashboard = [data.to_dict('records')]
+    data_dashboard = [data[data['NAMA PEMILIK'] == value_company].to_dict('records')]
     # tooltip_table_dash = tooltip_table(data)
     
     return data_dashboard
