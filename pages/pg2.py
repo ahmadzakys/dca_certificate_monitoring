@@ -608,8 +608,8 @@ def update_charts(data, value_tb, value_ba, value_cts):
 
     records_name = [[PERKASA2.to_dict('records'),PERKASA3.to_dict('records'),PERKASA11.to_dict('records'),PERKASA12.to_dict('records'),
                     PERKASA13.to_dict('records'),SELWYN1.to_dict('records'),BERAU21.to_dict('records'),BERAU22.to_dict('records'),
-                    TENANG1601.to_dict('records'),BINTANG1603.to_dict('records'),BINTANG2003.to_dict('records'),TENANG2001.to_dict('records'),
-                    TENANG1602.to_dict('records'),BINTANG2002.to_dict('records')],
+                    TENANG1601.to_dict('records'),TENANG1602.to_dict('records'),TENANG2001.to_dict('records'),BINTANG1603.to_dict('records'),
+                    BINTANG2002.to_dict('records'),BINTANG2003.to_dict('records')],
                     [PSPM2.to_dict('records'),PSPM3.to_dict('records'),PSPM11.to_dict('records'),PSPM12.to_dict('records'),
                     PSPM13.to_dict('records'),PSPM21.to_dict('records'),PSPM22.to_dict('records'),SOEKAWATI808.to_dict('records'),
                     SOEKAWATI909.to_dict('records'),TERANG3001.to_dict('records'),TERANG3003.to_dict('records'),TERANG3005.to_dict('records'),
