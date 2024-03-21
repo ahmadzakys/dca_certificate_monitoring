@@ -234,7 +234,8 @@ def update_charts(data, value_company):
 
     ### making new columns(Others) based on the minimum of 4 variables
     df_ba_days['Others'] = df_ba_days[['SERTIFIKAT NASIONAL SISTEM ANTI TERITIP (CERTIFICATE FOULING SYSTEM)',
-                                    'IJIN PENGOPERASIAN KAPAL DALAM NEGERI (RPT) (DOMESTIC VESSEL OPERATING PERMIT)']].min(axis=1)
+                                    'IJIN PENGOPERASIAN KAPAL DALAM NEGERI (RPT) (DOMESTIC VESSEL OPERATING PERMIT)',
+                                    'SERTIFIKAT PERSYARATAN KHUSUS UNTUK KAPAL MENGANGKUT BARANG BERBAHAYA']].min(axis=1)
 
     ### making new dataframe for status with emoji using df_tb_days
     df_ba_status = df_ba_days.copy()

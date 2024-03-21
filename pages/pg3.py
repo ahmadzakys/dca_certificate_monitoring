@@ -2513,7 +2513,8 @@ def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
 
     ### define which variable is for others
     df_ba['Others'] = df_ba[['SERTIFIKAT NASIONAL SISTEM ANTI TERITIP (CERTIFICATE FOULING SYSTEM)',
-                            'IJIN PENGOPERASIAN KAPAL DALAM NEGERI (RPT) (DOMESTIC VESSEL OPERATING PERMIT)']].min(axis=1)
+                            'IJIN PENGOPERASIAN KAPAL DALAM NEGERI (RPT) (DOMESTIC VESSEL OPERATING PERMIT)',
+                            'SERTIFIKAT PERSYARATAN KHUSUS UNTUK KAPAL MENGANGKUT BARANG BERBAHAYA']].min(axis=1)
     
     # New dataframe for remaining days
     diff_ba = ['SURAT LAUT/ PAS TAHUNAN (CERTIFICATE OF NATIONALITY)',
