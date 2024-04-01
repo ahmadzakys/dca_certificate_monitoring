@@ -124,6 +124,53 @@ layout = html.Div([
                         tooltip_duration=None
                     ))
                 ]),
+                
+                html.Br(),
+                dbc.Row([html.Div(dash_table.DataTable(
+                        columns=[
+                                {"name": "✔️", "id": "ok"},
+                                {"name": "⚠️", "id": "warning"},
+                                {"name": "❌", "id": "expired"},
+                                {"name": "🔲", "id": "NA"},
+                            ],
+                        data=[{
+                                "ok": "Valid",
+                                "warning": "≤ 1 Month",
+                                "expired": "Expired",
+                                "NA": "N/A",
+                                }
+                            ],
+                        # fill_width=False,
+                        style_cell={'font-family':'Verdana',
+                                    'fontSize': 15,
+                                    'color':'#2a3f5f'},
+                        style_cell_conditional=[
+                                                {'if': {'column_id': "ok"},
+                                                'width': '25%'},
+                                                {'if': {'column_id': "warning"},
+                                                'width': '25%'},
+                                                {'if': {'column_id': "expired"},
+                                                'width': '25%'},
+                                                {'if': {'column_id': "NA"},
+                                                'width': '25%'},
+                                                {'textAlign': 'center'}],
+                        style_header_conditional=[
+                                                {'if': {'column_id': "ok"},
+                                                'backgroundColor': '#dfd'},
+                                                {'if': {'column_id': "warning"},
+                                                'backgroundColor': '#ffd'},
+                                                {'if': {'column_id': "expired"},
+                                                'backgroundColor': '#fdd'},
+                                                {'if': {'column_id': "NA"},
+                                                'backgroundColor': '#dfd'}
+                                                ]
+                        )),
+                ]
+                ,style={
+                        'width':'67.5%',
+                        'paddingLeft':'30%',
+                        }
+                        ),
 
     html.Br(),
     html.Footer('DCA',
