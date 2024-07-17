@@ -283,6 +283,83 @@ layout = html.Div([
                                 'paddingLeft':'4%',
                                 }),
                     ]),
+
+                    dcc.Tab(label='OGV', children=[
+                        html.Br(),
+                        html.Div(dcc.Dropdown(
+                            id='ogv-dropdown',
+                            options=[
+                                {'label': 'BULK HALMAHERA', 'value': 'HALMAHERA'},
+                            ],
+                            value='HALMAHERA',
+                            style={
+                                'width':'97.5%',
+                                'paddingLeft':'4%',
+                                }
+                        )),
+                        html.Br(),
+                        html.Div([dash_table.DataTable(
+                            id='ogv-table',
+                            columns=[{'name':'CERTIFICATE','id': 'Certificate'},
+                                    {'name':'REMAINING DAYS','id': 'Remaining Days'},
+                                    {'name':'EXPIRY DATE','id': 'Expiry Date'},
+                                    {'name':'STATUS','id': 'Status'},],
+                            merge_duplicate_headers=True,
+                            # style_as_list_view=True,
+                            style_header={'backgroundColor': '#2a3f5f',
+                                        'fontWeight': 'bold',
+                                        'color':'white',
+                                        'border': '1px solid white',
+                                        'textAlign': 'center'
+                                    },
+                            style_cell_conditional=[{'if': {'column_id': 'Certificate'},
+                                                    'textAlign': 'left'},
+                                                    {'if': {'column_id': 'Remaining Days'},
+                                                    'textAlign': 'center'},
+                                                    {'if': {'column_id': 'Expiry Date'},
+                                                    'textAlign': 'center'},
+                                                    {'if': {'column_id': 'Status'},
+                                                    'textAlign': 'center'},
+                                                    ],
+                            style_cell={'font-family':'Verdana',
+                                        'fontSize': 15,
+                                        'color':'#2a3f5f'},
+                            style_data_conditional=(
+                                [
+                                    {'if': {'filter_query': '{{{col}}} eq "✔️"'.format(col=col),
+                                            'column_id': ['Status', 'Certificate', 'Remaining Days', 'Expiry Date']},
+                                    'backgroundColor': '#dfd'} for col in ['Status']
+                                ] +
+                                [
+                                    {'if': {'filter_query': '{{{col}}} eq "🔲"'.format(col=col),
+                                            'column_id': ['Status', 'Certificate', 'Remaining Days', 'Expiry Date']},
+                                    'backgroundColor': '#dfd'} for col in ['Status']
+                                ] +
+                                [
+                                    {'if': {'filter_query': '{{{col}}} eq "⚠️"'.format(col=col),
+                                            'column_id': ['Status', 'Certificate', 'Remaining Days', 'Expiry Date']},
+                                    'backgroundColor': '#ffd'} for col in ['Status']
+                                ] +
+                                [
+                                    {'if': {'filter_query': '{{{col}}} eq "❌"'.format(col=col),
+                                            'column_id': ['Status', 'Certificate', 'Remaining Days', 'Expiry Date']},
+                                    'backgroundColor': '#fdd'} for col in ['Status']
+                                ] +
+                                [
+                                    {'if': {'column_id': 'Certificate',},
+                                    'fontWeight': 'bold'},    
+                                ]
+                                ),
+                            css=[{
+                                'selector': '.dash-table-tooltip',
+                                'rule': 'background-color: white; font-family: Verdana; font-size: 10; color: #2a3f5f;'}],
+                            tooltip_delay=0,
+                            tooltip_duration=None
+                        )], style={
+                                'width':'90%',
+                                'paddingLeft':'2%',
+                                }),
+                    ]),
                 ],
                 style={
                     'font-family':'Verdana',
@@ -314,14 +391,16 @@ layout = html.Div([
     Output('tugboat-table', 'data'),
     Output('barge-table', 'data'),
     Output('cts-table', 'data'),
+    Output('ogv-table', 'data'),
     ],
 
     [Input('store', 'data'),
     Input('tugboat-dropdown', 'value'),
     Input('barge-dropdown', 'value'),
-    Input('cts-dropdown', 'value')]
+    Input('cts-dropdown', 'value'),
+    Input('ogv-dropdown', 'value')]
 )
-def update_charts(data, value_tb, value_ba, value_cts):
+def update_charts(data, value_tb, value_ba, value_cts, value_ogv):
     ######################
     # Pre Processing
     ######################
@@ -533,7 +612,7 @@ def update_charts(data, value_tb, value_ba, value_cts):
     col_del_cts = ['NO', 'NAMA PEMILIK','INTERMEDATE SURVEY',	'SPESIAL SURVEY',	"INTERMEDATE SURVEY2",	'SPESIAL SURVEY2',	'INTERMEDATE SURVEY3',
             'SPESIAL SURVEY3', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)',
             '3/6/12 BULAN', 'NEXT RENEWAL SYABANDAR','NOTA DINAS 1', 'NOTA DINAS 2',
-            'NEXT ANNUAL', 'REMOVAL OF WRECKS1', 'HULL & MACHINE', 'CERTIFIACATE DOCUMENT OF COMPLAINCE', ]
+            'NEXT ANNUAL', 'REMOVAL OF WRECKS1', 'HULL & MACHINE', 'CERTIFICATE DOCUMENT OF COMPLAINCE', ]
     col_stay_cts = [x for x in df_cts.columns if x not in col_del_cts]
 
     ### set 'NAMA KAPAL' as index
@@ -599,11 +678,93 @@ def update_charts(data, value_tb, value_ba, value_cts):
     DEWATA = dict_cts['DEWATA']
     SUMBA = dict_cts['SUMBA']
 
+    ######################
+    # OGV
+    ######################
+    df_ogv = pd.DataFrame(data['OGV'])
+
+    ### datetime variable
+    col = df_ogv.columns
+    col = list(col)
+
+    no_date_ogv = ['NO', 'NAMA KAPAL', 'NAMA PEMILIK', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
+            '3/6/12 BULAN', 'SPESIAL SURVEY']
+    col = [x for x in col if x not in no_date_ogv]
+
+    ### apply datetime to selected variable
+    df_ogv = df_ogv.replace(r'^\s*$', np.nan, regex=True)
+    df_ogv[col] = df_ogv[col].apply(pd.to_datetime, format='%d %B %Y')
+
+    ### remove unnecessary variable
+    col_del_ogv = ['NO', 'NAMA PEMILIK','INTERMEDATE SURVEY',	'SPESIAL SURVEY',	"INTERMEDATE SURVEY2",	'SPESIAL SURVEY2',	'INTERMEDATE SURVEY3',
+            'SPESIAL SURVEY3', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)',
+            '3/6/12 BULAN', 'NEXT RENEWAL SYABANDAR','NOTA DINAS 1', 'NOTA DINAS 2',
+            'NEXT ANNUAL', 'REMOVAL OF WRECKS1', 'HULL & MACHINE', 'CERTIFICATE DOCUMENT OF COMPLAINCE', ]
+    col_stay_ogv = [x for x in df_ogv.columns if x not in col_del_ogv]
+
+    ### set 'NAMA KAPAL' as index
+    df_ogv = df_ogv[df_ogv['NAMA PEMILIK'] == 'PT. ABL']
+    df_ogv = df_ogv[col_stay_ogv].set_index('NAMA KAPAL')
+
+    ### making new dataframe for remaining days only
+    df_ogv_days = df_ogv.copy()
+    for i in df_ogv:
+        df_ogv_days[i] = (df_ogv[i]-pd.to_datetime('today')).dt.days
+
+    ### making new dataframe for status with emoji using df_tb_days
+    df_ogv_status = df_ogv_days.copy()
+    for i in df_ogv_days:
+        df_ogv_status[i] = df_ogv_status[i].apply(lambda x:
+                                                '❌' if x < 0 else (
+                                                    '⚠️' if x < 30 else(
+                                                        '🔲' if pd.isna(x) else '✔️')))
+    
+    ### making new dataframe for remaining days aggregate within months
+    df_ogv_months = df_ogv.copy()
+
+    # Function for calculating remaining days
+    def date_diff(var):
+        remaining =[]
+        for i in var:
+            if i is pd.NaT:
+                remaining.append(pd.Timestamp('NaT'))
+            else :
+                delta = relativedelta(i, pd.to_datetime('today'))
+                if (delta.years == 0 and delta.months == 0):
+                    remaining.append((str(delta.days)+ ' days'))
+                else :
+                    res_months = delta.months + (delta.years * 12)
+                    remaining.append((str(res_months)+ ' months, '+ str(delta.days)+ ' days'))
+        return(remaining)
+
+    for i in df_ogv:
+        df_ogv_months[i] = date_diff(df_ogv[i])
+
+    ### seperate all dataframe by 'NAMA KAPAL'
+    nama_df_ogv = ['HALMAHERA']
+    dict_ogv = {}
+    for i,j in zip(df_ogv.index, nama_df_ogv):
+        days = pd.DataFrame(df_ogv_months.loc[i]).reset_index().rename(columns={'index':'Certificate',
+                                                                                i:'Remaining Days'})
+        exp = pd.DataFrame(df_ogv.loc[i]).reset_index().rename(columns={'index':'Certificate',
+                                                                                    i:'Expiry Date'})
+        status = pd.DataFrame(df_ogv_status.loc[i]).reset_index().rename(columns={'index':'Certificate',
+                                                                                    i:'Status'})
+
+        df = days.join(exp['Expiry Date']).join(status['Status'])
+
+        df = df.sort_values(by=['Expiry Date'])
+        df['Expiry Date'] = df['Expiry Date'].dt.strftime('%d/%m/%Y')
+        dict_ogv.update({j:df})
+    
+    HALMAHERA = dict_ogv['HALMAHERA']
+
     value_name = [['PERKASA2','PERKASA3','PERKASA11','PERKASA12','PERKASA13','SELWYN1','BERAU21','BERAU22',
                     'TENANG1601','TENANG1602','TENANG2001','BINTANG1603','BINTANG2002','BINTANG2003'],
                     ['PSPM2','PSPM3','PSPM11','PSPM12','PSPM13','PSPM21','PSPM22','SOEKAWATI808','SOEKAWATI909',
                     'TERANG3001','TERANG3003','TERANG3005','TERANG2701'],
-                    ['SUMATRA','KARIMUN','NATUNA','DERAWAN','JAVA','DEWATA','SUMBA']]
+                    ['SUMATRA','KARIMUN','NATUNA','DERAWAN','JAVA','DEWATA','SUMBA'],
+                    ['HALMAHERA']]
     value_comb = list(itertools.product(*value_name))
 
     records_name = [[PERKASA2.to_dict('records'),PERKASA3.to_dict('records'),PERKASA11.to_dict('records'),PERKASA12.to_dict('records'),
@@ -615,12 +776,13 @@ def update_charts(data, value_tb, value_ba, value_cts):
                     SOEKAWATI909.to_dict('records'),TERANG3001.to_dict('records'),TERANG3003.to_dict('records'),TERANG3005.to_dict('records'),
                     TERANG2701.to_dict('records')],
                     [SUMATRA.to_dict('records'),KARIMUN.to_dict('records'),NATUNA.to_dict('records'),DERAWAN.to_dict('records'),
-                    JAVA.to_dict('records'),DEWATA.to_dict('records'),SUMBA.to_dict('records')]]
+                    JAVA.to_dict('records'),DEWATA.to_dict('records'),SUMBA.to_dict('records')],
+                    [HALMAHERA.to_dict('records')]]
     records_comb = list(itertools.product(*records_name))
     
     for i in range(len(value_comb)):
-        if (value_tb==value_comb[i][0]) & (value_ba==value_comb[i][1]) & (value_cts==value_comb[i][2]):
-            return [records_comb[i][0], records_comb[i][1], records_comb[i][2]]
+        if (value_tb==value_comb[i][0]) & (value_ba==value_comb[i][1]) & (value_cts==value_comb[i][2] ) & (value_ogv==value_comb[i][3]):
+            return [records_comb[i][0], records_comb[i][1], records_comb[i][2], records_comb[i][3]]
     
     
 

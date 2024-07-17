@@ -2289,6 +2289,819 @@ layout = html.Div([
                             ], xs=4),
                         ]),
                     ]),
+
+                    dcc.Tab(label='OGV', children=[
+                        html.Br(),
+                        html.Div(dcc.Dropdown(
+                            id='ogv-company',
+                            options=[
+                                {'label': 'PT. ABL', 'value': 'PT. ABL'},
+                            ],
+                            value='PT. ABL',
+                            style={
+                                'width':'97.5%',
+                                'paddingLeft':'4%',
+                                }
+                        )),
+
+                        ## --ROW1--
+                        dbc.Row([
+                            dbc.Col([
+                                html.Br(),
+                                html.P(children=[html.Strong('NAT & TONNAGE')], 
+                                    style={'textAlign': 'center', 'fontSize': 22, 'background-color':'#F1F4F4','color':'#2a3f5f','font-family':'Verdana'}),
+
+                                dbc.Row([###### NAT & TONNAGE Summary
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Summary')],
+                                                                style={'textAlign': 'center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-info-square', style={
+                                                                                        "color": "white",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-secondary',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=5),
+                                    ###### NAT & TONNAGE Alerts
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Alerts')],
+                                                                style={'textAlign': 'Center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-exclamation-square', style={
+                                                                                        "color": "white",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-warning',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center"),
+
+                                dbc.Row([
+                                    ###### NAT & TONNAGE Bar Plot
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(dcc.Graph(id='nat&tonnage_ogv_bar'))
+                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=5),
+                                    ###### NAT & TONNAGE Alerts Table
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(html.Div(dash_table.DataTable(id="data_nat&tonnage_ogv_alerts",
+                                                                                    columns=[{'name':'Vessel','id': 'Vessel'},
+                                                                                                {'name':'Remaining Days','id': 'Remaining Days'}],
+                                                                                    style_as_list_view=True,
+                                                                                    style_header={'backgroundColor': 'white',
+                                                                                                    'fontWeight': 'bold'
+                                                                                                },
+                                                                                    style_cell_conditional=[{'if': {'column_id': 'Vessel'},
+                                                                                                                'width': '30%'},
+                                                                                                                {'if': {'column_id': 'Remaining Days'},
+                                                                                                                'width': '70%'},
+                                                                                                                {'textAlign': 'center'}
+                                                                                                            ],
+                                                                                    style_cell={'font-family':'Verdana',
+                                                                                                'fontSize': 13,
+                                                                                                'color':'#2a3f5f',},
+                                                                                    css=[{
+                                                                                        'selector': '.dash-table-tooltip',
+                                                                                        'rule': 'background-color: grey; font-family: monospace; color: white',
+                                                                                        #    'rule': 'background-color: white; font-family: monospace; color: #2a3f5f;',
+                                                                                        }],
+                                                                                    tooltip_delay=0,
+                                                                                    tooltip_duration=None
+                                                                                    )))
+                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center")
+                            ], xs=4),
+
+                            dbc.Col([
+                                html.Br(),
+                                html.P(children=[html.Strong('SOLAS')], 
+                                    style={'textAlign': 'center', 'fontSize': 22, 'background-color':'#F1F4F4','color':'#2a3f5f','font-family':'Verdana'}),
+
+                                dbc.Row([###### SOLAS Summary
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Summary')],
+                                                                style={'textAlign': 'center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-info-square', style={
+                                                                                        "color": "white",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-secondary',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=5),
+                                    ###### SOLAS Alerts
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Alerts')],
+                                                                style={'textAlign': 'Center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-exclamation-square', style={
+                                                                                        "color": "white",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-warning',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center"),
+
+                                dbc.Row([
+                                    ###### SOLAS Bar Plot
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(dcc.Graph(id='solas_ogv_bar'))
+                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=5),
+                                    ###### SOLAS Alerts Table
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(html.Div(dash_table.DataTable(id="data_solas_ogv_alerts",
+                                                                                    columns=[{'name':'Vessel','id': 'Vessel'},
+                                                                                                {'name':'Remaining Days','id': 'Remaining Days'}],
+                                                                                    style_as_list_view=True,
+                                                                                    style_header={'backgroundColor': 'white',
+                                                                                                    'fontWeight': 'bold'
+                                                                                                },
+                                                                                    style_cell_conditional=[{'if': {'column_id': 'Vessel'},
+                                                                                                                'width': '30%'},
+                                                                                                                {'if': {'column_id': 'Remaining Days'},
+                                                                                                                'width': '70%'},
+                                                                                                                {'textAlign': 'center'}
+                                                                                                            ],
+                                                                                    style_cell={'font-family':'Verdana',
+                                                                                                'fontSize': 13,
+                                                                                                'color':'#2a3f5f',},
+                                                                                    css=[{
+                                                                                        'selector': '.dash-table-tooltip',
+                                                                                        'rule': 'background-color: white; font-family: Verdana; color: #2a3f5f;'}],
+                                                                                    tooltip_delay=0,
+                                                                                    tooltip_duration=None
+                                                                                    )))
+                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center")
+                            ], xs=4),                    
+
+                            dbc.Col([
+                                html.Br(),
+                                html.P(children=[html.Strong('POLLUTION')], 
+                                    style={'textAlign': 'center', 'fontSize': 22, 'background-color':'#F1F4F4','color':'#2a3f5f','font-family':'Verdana'}),
+
+                                dbc.Row([###### POLLUTION Summary
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Summary')],
+                                                                style={'textAlign': 'center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-info-square', style={
+                                                                                        "color": "white",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-secondary',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=5),
+                                    ###### POLLUTION Alerts
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Alerts')],
+                                                                style={'textAlign': 'Center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-exclamation-square', style={
+                                                                                        "color": "white",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-warning',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center"),
+
+                                dbc.Row([
+                                    ###### POLLUTION Bar Plot
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(dcc.Graph(id='pollution_ogv_bar'))
+                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=5),
+                                    ###### POLLUTION Alerts Table
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(html.Div(dash_table.DataTable(id="data_pollution_ogv_alerts",
+                                                                                    columns=[{'name':'Vessel','id': 'Vessel'},
+                                                                                                {'name':'Remaining Days','id': 'Remaining Days'}],
+                                                                                    style_as_list_view=True,
+                                                                                    style_header={'backgroundColor': 'white',
+                                                                                                    'fontWeight': 'bold'
+                                                                                                },
+                                                                                    style_cell_conditional=[{'if': {'column_id': 'Vessel'},
+                                                                                                                'width': '30%'},
+                                                                                                                {'if': {'column_id': 'Remaining Days'},
+                                                                                                                'width': '70%'},
+                                                                                                                {'textAlign': 'center'}
+                                                                                                            ],
+                                                                                    style_cell={'font-family':'Verdana',
+                                                                                                'fontSize': 13,
+                                                                                                'color':'#2a3f5f',},
+                                                                                    css=[{
+                                                                                        'selector': '.dash-table-tooltip',
+                                                                                        'rule': 'background-color: white; font-family: Verdana; color: #2a3f5f;'}],
+                                                                                    tooltip_delay=0,
+                                                                                    tooltip_duration=None
+                                                                                    )))
+                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center")
+                            ], xs=4),
+                        ]),
+
+                        ## --ROW2--
+                        dbc.Row([
+                            dbc.Col([
+                                html.Br(),
+                                html.P(children=[html.Strong('CLASS')], 
+                                    style={'textAlign': 'center', 'fontSize': 22, 'background-color':'#F1F4F4','color':'#2a3f5f','font-family':'Verdana'}),
+
+                                dbc.Row([###### CLASS Summary
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Summary')],
+                                                                style={'textAlign': 'center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-info-square', style={
+                                                                                        "color": "white",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-secondary',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=5),
+                                    ###### CLASS Alerts
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Alerts')],
+                                                                style={'textAlign': 'Center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-exclamation-square', style={
+                                                                                        "color": "white",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-warning',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center"),
+
+                                dbc.Row([
+                                    ###### CLASS Bar Plot
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(dcc.Graph(id='class_ogv_bar'))
+                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=5),
+                                    ###### CLASS Alerts Table
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(html.Div(dash_table.DataTable(id="data_class_ogv_alerts",
+                                                                                    columns=[{'name':'Vessel','id': 'Vessel'},
+                                                                                                {'name':'Remaining Days','id': 'Remaining Days'}],
+                                                                                    style_as_list_view=True,
+                                                                                    style_header={'backgroundColor': 'white',
+                                                                                                    'fontWeight': 'bold'
+                                                                                                },
+                                                                                    style_cell_conditional=[{'if': {'column_id': 'Vessel'},
+                                                                                                                'width': '30%'},
+                                                                                                                {'if': {'column_id': 'Remaining Days'},
+                                                                                                                'width': '70%'},
+                                                                                                                {'textAlign': 'center'}
+                                                                                                            ],
+                                                                                    style_cell={'font-family':'Verdana',
+                                                                                                'fontSize': 13,
+                                                                                                'color':'#2a3f5f',},
+                                                                                    css=[{
+                                                                                        'selector': '.dash-table-tooltip',
+                                                                                        'rule': 'background-color: white; font-family: Verdana; color: #2a3f5f;'}],
+                                                                                    tooltip_delay=0,
+                                                                                    tooltip_duration=None
+                                                                                    )))
+                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center")
+                            ], xs=4),
+
+                            dbc.Col([
+                                html.Br(),
+                                html.P(children=[html.Strong('INSURANCE')], 
+                                    style={'textAlign': 'center', 'fontSize': 22, 'background-color':'#F1F4F4','color':'#2a3f5f','font-family':'Verdana'}),
+
+                                dbc.Row([###### INSURANCE Summary
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Summary')],
+                                                                style={'textAlign': 'center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-info-square', style={
+                                                                                        "color": "#F1F4F4",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-secondary',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=5),
+                                    ###### INSURANCE Alerts
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Alerts')],
+                                                                style={'textAlign': 'Center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-exclamation-square', style={
+                                                                                        "color": "white",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-warning',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center"),
+
+                                dbc.Row([
+                                    ###### INSURANCE Bar Plot
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(dcc.Graph(id='insurance_ogv_bar'))
+                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=5),
+                                    ###### INSURANCE Alerts Table
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(html.Div(dash_table.DataTable(id="data_insurance_ogv_alerts",
+                                                                                    columns=[{'name':'Vessel','id': 'Vessel'},
+                                                                                                {'name':'Remaining Days','id': 'Remaining Days'}],
+                                                                                    style_as_list_view=True,
+                                                                                    style_header={'backgroundColor': 'white',
+                                                                                                    'fontWeight': 'bold'
+                                                                                                },
+                                                                                    style_cell_conditional=[{'if': {'column_id': 'Vessel'},
+                                                                                                                'width': '30%'},
+                                                                                                                {'if': {'column_id': 'Remaining Days'},
+                                                                                                                'width': '70%'},
+                                                                                                                {'textAlign': 'center'}
+                                                                                                            ],
+                                                                                    style_cell={'font-family':'Verdana',
+                                                                                                'fontSize': 13,
+                                                                                                'color':'#2a3f5f',},
+                                                                                    css=[{
+                                                                                        'selector': '.dash-table-tooltip',
+                                                                                        'rule': 'background-color: white; font-family: Verdana; color: #2a3f5f;'}],
+                                                                                    tooltip_delay=0,
+                                                                                    tooltip_duration=None
+                                                                                    )))
+                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center")
+                            ], xs=4),
+
+                            dbc.Col([
+                                html.Br(),
+                                html.P(children=[html.Strong('LSA & FFA')], 
+                                    style={'textAlign': 'center', 'fontSize': 22, 'background-color':'#F1F4F4','color':'#2a3f5f','font-family':'Verdana'}),
+
+                                dbc.Row([###### LSA & FFA Summary
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Summary')],
+                                                                style={'textAlign': 'center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-info-square', style={
+                                                                                        "color": "white",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-secondary',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=5),
+                                    ###### LSA & FFA Alerts
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Alerts')],
+                                                                style={'textAlign': 'Center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-exclamation-square', style={
+                                                                                        "color": "white",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-warning',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center"),
+
+                                dbc.Row([
+                                    ###### LSA & FFA Bar Plot
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(dcc.Graph(id='lsa&fa_ogv_bar'))
+                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=5),
+                                    ###### LSA & FFA Alerts Table
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(html.Div(dash_table.DataTable(id="data_lsa&fa_ogv_alerts",
+                                                                                    columns=[{'name':'Vessel','id': 'Vessel'},
+                                                                                                {'name':'Remaining Days','id': 'Remaining Days'}],
+                                                                                    style_as_list_view=True,
+                                                                                    style_header={'backgroundColor': 'white',
+                                                                                                    'fontWeight': 'bold'
+                                                                                                },
+                                                                                    style_cell_conditional=[{'if': {'column_id': 'Vessel'},
+                                                                                                                'width': '30%'},
+                                                                                                                {'if': {'column_id': 'Remaining Days'},
+                                                                                                                'width': '70%'},
+                                                                                                                {'textAlign': 'center'}
+                                                                                                            ],
+                                                                                    style_cell={'font-family':'Verdana',
+                                                                                                'fontSize': 13,
+                                                                                                'color':'#2a3f5f',},
+                                                                                    css=[{
+                                                                                        'selector': '.dash-table-tooltip',
+                                                                                        'rule': 'background-color: white; font-family: Verdana; color: #2a3f5f;'}],
+                                                                                    tooltip_delay=0,
+                                                                                    tooltip_duration=None
+                                                                                    )))
+                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center")
+                            ], xs=4),
+                        ]),
+
+                        ## --ROW3--
+                        dbc.Row([
+                            dbc.Col([
+                                html.Br(),
+                                html.P(children=[html.Strong('HEALTH')], 
+                                    style={'textAlign': 'center', 'fontSize': 22, 'background-color':'#F1F4F4','color':'#2a3f5f','font-family':'Verdana'}),
+
+                                dbc.Row([###### HEALTH Summary
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Summary')],
+                                                                style={'textAlign': 'center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-info-square', style={
+                                                                                        "color": "white",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-secondary',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=5),
+                                    ###### HEALTH Alerts
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Alerts')],
+                                                                style={'textAlign': 'Center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-exclamation-square', style={
+                                                                                        "color": "white",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-warning',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center"),
+
+                                dbc.Row([
+                                    ###### HEALTH Plot
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(dcc.Graph(id='health_ogv_bar'))
+                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=5),
+                                    ###### HEALTH Table
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(html.Div(dash_table.DataTable(id="data_health_ogv_alerts",
+                                                                                    columns=[{'name':'Vessel','id': 'Vessel'},
+                                                                                                {'name':'Remaining Days','id': 'Remaining Days'}],
+                                                                                    style_as_list_view=True,
+                                                                                    style_header={'backgroundColor': 'white',
+                                                                                                    'fontWeight': 'bold'
+                                                                                                },
+                                                                                    style_cell_conditional=[{'if': {'column_id': 'Vessel'},
+                                                                                                                'width': '30%'},
+                                                                                                                {'if': {'column_id': 'Remaining Days'},
+                                                                                                                'width': '70%'},
+                                                                                                                {'textAlign': 'center'}
+                                                                                                            ],
+                                                                                    style_cell={'font-family':'Verdana',
+                                                                                                'fontSize': 13,
+                                                                                                'color':'#2a3f5f',},
+                                                                                    css=[{
+                                                                                        'selector': '.dash-table-tooltip',
+                                                                                        'rule': 'background-color: white; font-family: Verdana; color: #2a3f5f;'}],
+                                                                                    tooltip_delay=0,
+                                                                                    tooltip_duration=None
+                                                                                    )))
+                                        ], color="light", outline=True, style={"height": 210, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center")
+                            ], xs=4),
+
+                            dbc.Col([
+                                html.Br(),
+                                html.P(children=[html.Strong('OTHERS')], 
+                                    style={'textAlign': 'center', 'fontSize': 22, 'background-color':'#F1F4F4','color':'#2a3f5f','font-family':'Verdana'}),
+
+                                dbc.Row([###### OTHERS Summary
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Summary')],
+                                                                style={'textAlign': 'center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-info-square', style={
+                                                                                        "color": "white",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-secondary',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=5),
+                                    ###### OTHERS Alerts
+                                    dbc.Col([
+                                        dbc.CardGroup([
+                                            dbc.Card(
+                                                dbc.CardBody(
+                                                    [
+                                                        html.P(children=[html.Strong('Alerts')],
+                                                                style={'textAlign': 'Center', 
+                                                                    'fontSize': 16, 
+                                                                    'background-color':'#F1F4F4',
+                                                                    'color':'#2a3f5f',
+                                                                    'font-family':'Verdana'}),
+                                                    ]
+                                                ), color="light", outline=True, style={"height": 55, "margin-bottom": "5px", 'background':'#F1F4F4'}
+                                            ),
+                                            dbc.Card(
+                                                html.Div(className='bi bi-exclamation-square', style={
+                                                                                        "color": "white",
+                                                                                        "textAlign": "center",
+                                                                                        "fontSize": 30,
+                                                                                        "margin": "auto",
+                                                                                    }),
+                                                className='bg-warning',
+                                                color="light", outline=True, style={"height": 55, "margin-bottom": "5px", "maxWidth": 75}
+                                            ),
+                                        ],),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center"),
+
+                                dbc.Row([
+                                    ###### OTHERS Plot
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(dcc.Graph(id='others_ogv_bar'))
+                                        ], color="light", outline=True, style={"height": 370, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=5),
+                                    ###### OTHERS Alerts Table
+                                    dbc.Col([
+                                        dbc.Card([
+                                            dbc.CardBody(html.Div(dash_table.DataTable(id="data_others_ogv_alerts",
+                                                                                    columns=[{'name':'Vessel','id': 'Vessel'},
+                                                                                                {'name':'Remaining Days','id': 'Remaining Days'}],
+                                                                                    style_as_list_view=True,
+                                                                                    style_header={'backgroundColor': 'white',
+                                                                                                    'fontWeight': 'bold'
+                                                                                                },
+                                                                                    style_cell_conditional=[{'if': {'column_id': 'Vessel'},
+                                                                                                                'width': '30%'},
+                                                                                                                {'if': {'column_id': 'Remaining Days'},
+                                                                                                                'width': '70%'},
+                                                                                                                {'textAlign': 'center'}
+                                                                                                            ],
+                                                                                    style_cell={'font-family':'Verdana',
+                                                                                                'fontSize': 13,
+                                                                                                'color':'#2a3f5f',},
+                                                                                    # page_action="native",
+                                                                                    # page_current= 0,
+                                                                                    # page_size= 4,
+                                                                                    css=[{
+                                                                                        'selector': '.dash-table-tooltip',
+                                                                                        'rule': 'background-color: white; font-family: Verdana; color: #2a3f5f;'}],
+                                                                                    tooltip_delay=0,
+                                                                                    tooltip_duration=None
+                                                                                    )))
+                                        ], color="light", outline=True, style={"height": 370, "margin-bottom": "5px", 'background':'#F1F4F4'}),
+                                    ], xs=7),
+                                ], className="g-0 d-flex align-items-center")
+                            ], xs=4),
+                        ]),
+                    ]),
                 ],
                 style={
                     'font-family':'Verdana',
@@ -2385,15 +3198,41 @@ layout = html.Div([
 
     Output('others_cts_bar', 'figure'),
     Output('data_others_cts_alerts', 'data'),
+
+
+    Output('nat&tonnage_ogv_bar', 'figure'),
+    Output('data_nat&tonnage_ogv_alerts', 'data'),
+
+    Output('solas_ogv_bar', 'figure'),
+    Output('data_solas_ogv_alerts', 'data'),
+
+    Output('pollution_ogv_bar', 'figure'),
+    Output('data_pollution_ogv_alerts', 'data'),
+
+    Output('class_ogv_bar', 'figure'),
+    Output('data_class_ogv_alerts', 'data'),
+
+    Output('insurance_ogv_bar', 'figure'),
+    Output('data_insurance_ogv_alerts', 'data'),
+
+    Output('lsa&fa_ogv_bar', 'figure'),
+    Output('data_lsa&fa_ogv_alerts', 'data'),
+
+    Output('health_ogv_bar', 'figure'),
+    Output('data_health_ogv_alerts', 'data'),
+
+    Output('others_ogv_bar', 'figure'),
+    Output('data_others_ogv_alerts', 'data'),
     ],
     [
     Input('store', 'data'),
     Input('tugboat-company', 'value'),
     Input('barge-company', 'value'),
-    Input('cts-company', 'value')
+    Input('cts-company', 'value'),
+    Input('ogv-company', 'value')
     ]
 )
-def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
+def update_charts(data, tb_value_company, ba_value_company, cts_value_company, ogv_value_company):
     ######################
     # Pre Processing
     ######################
@@ -2664,6 +3503,100 @@ def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
             'Others':'Others',
         }, inplace=True)
     
+    ######################
+    # OGV
+    ######################
+    df_ogv = pd.DataFrame(data['OGV'])
+
+    ### datetime variable
+    col = df_ogv.columns
+    col = list(col)
+
+    no_date_ogv = ['NO', 'NAMA KAPAL', 'NAMA PEMILIK', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
+            '3/6/12 BULAN', 'SPESIAL SURVEY']
+    col = [x for x in col if x not in no_date_ogv]
+
+    ### apply datetime to selected variable
+    df_ogv = df_ogv.replace(r'^\s*$', np.nan, regex=True)
+    df_ogv[col] = df_ogv[col].apply(pd.to_datetime, format='%d %B %Y')
+
+    ### remove unnecessary variable
+    col_del_ogv = ['NO','INTERMEDATE SURVEY','SPESIAL SURVEY',"INTERMEDATE SURVEY2",'SPESIAL SURVEY2','INTERMEDATE SURVEY3',
+            'SPESIAL SURVEY3', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)',
+            '3/6/12 BULAN', 'NEXT RENEWAL SYABANDAR','NOTA DINAS 1', 'NOTA DINAS 2',
+            'NEXT ANNUAL', 'REMOVAL OF WRECKS1', 'HULL & MACHINE', 'CERTIFICATE DOCUMENT OF COMPLAINCE', ]
+    col_stay_ogv = [x for x in df_ogv.columns if x not in col_del_ogv]
+
+    ### set new data frame
+    df_ogv = df_ogv[col_stay_ogv]
+
+    ### define which variable is for others
+    df_ogv['Others'] = df_ogv[['SERTIFIKAT NASIONAL SISTEM ANTI TERITIP (CERTIFICATE FOULING SISTEM)',
+                                'DOKUMEN PENGAWAKAN MINIMUM (MINIMUM SAFE MANNING DOCUMENT)',
+                                # 'SERTIFIKAT SIKR (SURAT IZIN STASIUN RADIO KAPAL LAUT)',
+                                # 'IJIN PENGOPERASIAN KAPAL DALAM NEGERI (RPT) (DOMESTIC VESSEL OPERATING PERMIT)'
+                                ]].min(axis=1)
+    # New dataframe for remaining days
+    diff_ogv = ['SURAT LAUT/ PAS TAHUNAN (CERTIFICATE OF NATIONALITY)',
+                'SERT. KESELAMATAN KONSTRUKSI KAPAL (CERTIFICATE OF SHIP SAFETY CONSTRUCTION)',
+                'SERT. PENCEGAHAN PENCEMARAN MINYAK (CERTIFICATE OF INTERNATIONAL OIL POLLUTION PREVENTION (SNPP))',
+                'SERT. GARIS MUAT INTERNASIONAL (CERTIFICATE OF LOAD LINE)',
+                'SERTIFIKAT JAMINAN GANTI RUGI PENCEMARAN MINYAK',
+                'SERTIFIKAT PEMERIKSAAN RAKIT PENYELAMATAN (CERTIFICATE OF LIFERAFT INSPECTION)',
+                'SERTIFIKAT BEBAS TINDAKAN SANITASI KAPAL (SHIP SANITATION CONTROL EXEMPTON CERTIFICATE)',
+                'Others'
+                ]
+
+    df_diff_ogv = df_ogv[['NAMA KAPAL', 'NAMA PEMILIK']+diff_ogv].copy()
+
+    # Add new variable for remaining days
+    diff_ogv_name = ['Nationality & Tonnage Remain Days', 
+                    'SOLAS Remain Days', 
+                    'Pollution Remain Days', 
+                    'Class Remain Days', 
+                    'Insurance Remain Days',
+                    'LSA & FFA Remain Days',
+                    'Health Remain Days',
+                    'Others Remain Days']
+
+    for (i,j) in zip(diff_ogv, diff_ogv_name):
+        df_diff_ogv[j] = (df_diff_ogv[i]-pd.to_datetime('today')).dt.days
+
+    # Add new variable for remaining days (Months, Days)
+    diff_ogv_name2 = ['Nationality & Tonnage Remain Days2', 
+                    'SOLAS Remain Days2', 
+                    'Pollution Remain Days2', 
+                    'Class Remain Days2', 
+                    'Insurance Remain Days2',
+                    'LSA & FFA Remain Days2',
+                    'Health Remain Days2',
+                    'Others Remain Days2']
+
+    # Function for calculating remaining days
+    def date_diff(var):
+        remaining =[]
+        for i in var:
+            if i is pd.NaT:
+                remaining.append(pd.Timestamp('NaT'))
+            else :
+                delta = relativedelta(i, pd.to_datetime('today'))
+                remaining.append((str(delta.days)+ ' days'))
+        return(remaining)
+
+    for i,j in zip(diff_ogv, diff_ogv_name2):
+        df_diff_ogv[j] = date_diff(df_diff_ogv[i])
+    
+    df_diff_ogv.rename(columns={
+            'SURAT LAUT/ PAS TAHUNAN (CERTIFICATE OF NATIONALITY)':'Nationality & Tonnage',
+            'SERT. KESELAMATAN KONSTRUKSI KAPAL (CERTIFICATE OF SHIP SAFETY CONSTRUCTION)':'SOLAS',
+            'SERT. PENCEGAHAN PENCEMARAN MINYAK (CERTIFICATE OF INTERNATIONAL OIL POLLUTION PREVENTION (SNPP))':'Pollution',
+            'SERT. GARIS MUAT INTERNASIONAL (CERTIFICATE OF LOAD LINE)':'Class',
+            'SERTIFIKAT JAMINAN GANTI RUGI PENCEMARAN MINYAK':'Insurance',
+            'SERTIFIKAT PEMERIKSAAN RAKIT PENYELAMATAN (CERTIFICATE OF LIFERAFT INSPECTION)':'LSA & FFA',
+            'SERTIFIKAT BEBAS TINDAKAN SANITASI KAPAL (SHIP SANITATION CONTROL EXEMPTON CERTIFICATE)':'Health',
+            'Others':'Others',
+        }, inplace=True)
+    
     # subset berdasarkan company (Nama Pemilik)
     pemilik_subset_tb = {}
     for pemilik in df_diff_tb['NAMA PEMILIK'].unique():
@@ -2679,6 +3612,11 @@ def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
     for pemilik in df_diff_cts['NAMA PEMILIK'].unique():
         subset = df_diff_cts[df_diff_cts['NAMA PEMILIK'] == pemilik]
         pemilik_subset_cts[pemilik] = subset
+
+    pemilik_subset_ogv = {}
+    for pemilik in df_diff_ogv['NAMA PEMILIK'].unique():
+        subset = df_diff_ogv[df_diff_ogv['NAMA PEMILIK'] == pemilik]
+        pemilik_subset_ogv[pemilik] = subset
     
     condition = ['Ok', 'Alerts', 'Expired']
     
@@ -2703,7 +3641,15 @@ def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
             bar_plot(count_insurance_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), insurance_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
             bar_plot(count_lsa_ffa_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), lsa_ffa_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
             bar_plot(count_health_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), health_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
-            bar_plot(count_others_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), others_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),      
+            bar_plot(count_others_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), others_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
+            bar_plot(count_nat_tonnage_classify(df_diff_ogv[df_diff_ogv['NAMA PEMILIK'] == ogv_value_company]), condition), nat_tonnage_classify(pemilik_subset_ogv[ogv_value_company]).to_dict('records'),\
+            bar_plot(count_solas_classify(df_diff_ogv[df_diff_ogv['NAMA PEMILIK'] == ogv_value_company]), condition), solas_classify(pemilik_subset_ogv[ogv_value_company]).to_dict('records'),\
+            bar_plot(count_pollution_classify(df_diff_ogv[df_diff_ogv['NAMA PEMILIK'] == ogv_value_company]), condition), pollution_classify(pemilik_subset_ogv[ogv_value_company]).to_dict('records'),\
+            bar_plot(count_class_classify(df_diff_ogv[df_diff_ogv['NAMA PEMILIK'] == ogv_value_company]), condition), class_classify(pemilik_subset_ogv[ogv_value_company]).to_dict('records'),\
+            bar_plot(count_insurance_classify(df_diff_ogv[df_diff_ogv['NAMA PEMILIK'] == ogv_value_company]), condition), insurance_classify(pemilik_subset_ogv[ogv_value_company]).to_dict('records'),\
+            bar_plot(count_lsa_ffa_classify(df_diff_ogv[df_diff_ogv['NAMA PEMILIK'] == ogv_value_company]), condition), lsa_ffa_classify(pemilik_subset_ogv[ogv_value_company]).to_dict('records'),\
+            bar_plot(count_health_classify(df_diff_ogv[df_diff_ogv['NAMA PEMILIK'] == ogv_value_company]), condition), health_classify(pemilik_subset_ogv[ogv_value_company]).to_dict('records'),\
+            bar_plot(count_others_classify(df_diff_ogv[df_diff_ogv['NAMA PEMILIK'] == ogv_value_company]), condition), others_classify(pemilik_subset_ogv[ogv_value_company]).to_dict('records'),        
             
                       
 ######################
