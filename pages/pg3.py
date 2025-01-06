@@ -1485,6 +1485,8 @@ layout = html.Div([
                             options=[
                                 {'label': 'PT. ABL', 'value': 'PT. ABL'},
                                 {'label': 'PT. PNTS', 'value': 'PT. PNTS'},
+                                {'label': 'PT. PSS', 'value': 'PT. PSS'},
+                                {'label': 'PT. MAP', 'value': 'PT. MAP'},
                             ],
                             value='PT. ABL',
                             style={
