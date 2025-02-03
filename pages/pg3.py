@@ -41,6 +41,7 @@ layout = html.Div([
                                 {'label': 'PT. RVI', 'value': 'PT. RVI'},
                                 {'label': 'PT. AAS', 'value': 'PT. AAS'},
                                 {'label': 'PT. MAP', 'value': 'PT. MAP'},
+                                {'label': 'PT. HSL', 'value': 'PT. HSL'},
                             ],
                             value='PT. DCA',
                             style={
