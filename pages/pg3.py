@@ -26,7 +26,7 @@ layout = html.Div([
                     ##### TAB BARGE
                     dcc.Tab(label='Tug Boat', children=[
                         html.Br(),
-                        html.Div(dcc.Dropdown(
+                        html.Div([dcc.Dropdown(
                             id='tugboat-company',
                             options=[
                                 {'label': 'PT. DCA', 'value': 'PT. DCA'},
@@ -48,7 +48,20 @@ layout = html.Div([
                                 'width':'97.5%',
                                 'paddingLeft':'4%',
                                 }
-                        )),
+                        ),
+                        dcc.Dropdown(
+                            id='area-name',
+                            options=[
+                                {'label': 'BERAU', 'value': 'BERAU'},
+                                {'label': 'NON-BERAU', 'value': 'NON-BERAU'},
+                                ],
+                            value='BERAU',
+                            style={
+                                'width':'95%',
+                                'paddingLeft':'2.5%',
+                                }
+                        )
+                        ], style={'display': 'flex', 'flex-direction': 'row', 'gap': '10px'}),
                 
                         ## --ROW1--
                         dbc.Row([
@@ -860,7 +873,7 @@ layout = html.Div([
                     ##### TAB BARGE
                     dcc.Tab(label='Barge', children=[
                         html.Br(),
-                        html.Div(dcc.Dropdown(
+                        html.Div([dcc.Dropdown(
                             id='barge-company',
                             options=[
                                 {'label': 'PT. DCA', 'value': 'PT. DCA'},
@@ -876,7 +889,20 @@ layout = html.Div([
                                 'width':'97.5%',
                                 'paddingLeft':'4%',
                                 }
-                        )),
+                        ),
+                        dcc.Dropdown(
+                            id='area-name',
+                            options=[
+                                {'label': 'BERAU', 'value': 'BERAU'},
+                                {'label': 'NON-BERAU', 'value': 'NON-BERAU'},
+                                ],
+                            value='BERAU',
+                            style={
+                                'width':'95%',
+                                'paddingLeft':'2.5%',
+                                }
+                        )
+                        ], style={'display': 'flex', 'flex-direction': 'row', 'gap': '10px'}),
                         ## --ROW1--
                         dbc.Row([
                             dbc.Col([
@@ -1482,19 +1508,34 @@ layout = html.Div([
                     ##### TAB CTS
                     dcc.Tab(label='CTS', children=[
                         html.Br(),
-                        html.Div(dcc.Dropdown(
+                        html.Div([dcc.Dropdown(
                             id='cts-company',
                             options=[
                                 {'label': 'PT. ABL', 'value': 'PT. ABL'},
                                 {'label': 'PT. PNTS', 'value': 'PT. PNTS'},
                                 {'label': 'PT. PSS', 'value': 'PT. PSS'},
+                                {'label': 'PT. RVI', 'value': 'PT. RVI'},
+                                {'label': 'PT. KMJ', 'value': 'PT. KMJ'},
                             ],
                             value='PT. ABL',
                             style={
                                 'width':'97.5%',
                                 'paddingLeft':'4%',
                                 }
-                        )),
+                        ),
+                        dcc.Dropdown(
+                            id='area-name',
+                            options=[
+                                {'label': 'BERAU', 'value': 'BERAU'},
+                                {'label': 'NON-BERAU', 'value': 'NON-BERAU'},
+                                ],
+                            value='BERAU',
+                            style={
+                                'width':'95%',
+                                'paddingLeft':'2.5%',
+                                }
+                        )
+                        ], style={'display': 'flex', 'flex-direction': 'row', 'gap': '10px'}),
 
                         ## --ROW1--
                         dbc.Row([
@@ -2397,9 +2438,10 @@ layout = html.Div([
     Input('tugboat-company', 'value'),
     Input('barge-company', 'value'),
     Input('cts-company', 'value'),
+    Input('area-name', 'value')
     ]
 )
-def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
+def update_charts(data, tb_value_company, ba_value_company, cts_value_company, value_area):
     ######################
     # Pre Processing
     ######################
@@ -2412,7 +2454,7 @@ def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
     col = list(col)
 
     no_date = ['NO', 'NAMA KAPAL', 'NAMA PEMILIK', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
-            '3/6/12 BULAN', ]
+            '3/6/12 BULAN', 'AREA']
     col = [x for x in col if x not in no_date]
 
     ### apply datetime to selected variable
@@ -2443,7 +2485,7 @@ def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
                 'Others'
                 ]
 
-    df_diff_tb = df_tb[['NAMA KAPAL', 'NAMA PEMILIK']+diff_tb].copy()
+    df_diff_tb = df_tb[['NAMA KAPAL', 'NAMA PEMILIK', 'AREA']+diff_tb].copy()
 
     # Add new variable for remaining days
     diff_tb_name = ['Nationality & Tonnage Remain Days', 
@@ -2493,6 +2535,14 @@ def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
             'Others':'Others',
         }, inplace=True)
     
+    # subset berdasarkan company (Nama Pemilik) and area for Tug Boat
+    filtered_df_tb = df_diff_tb.copy()
+    if tb_value_company:
+        filtered_df_tb = filtered_df_tb[filtered_df_tb['NAMA PEMILIK'] == tb_value_company]
+    if value_area:
+        filtered_df_tb = filtered_df_tb[filtered_df_tb['AREA'] == value_area]
+
+    
     ######################
     # Barge
     ######################
@@ -2503,7 +2553,7 @@ def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
     col_ba = list(col_ba)
 
     no_date = ['NO', 'NAMA KAPAL', 'NAMA PEMILIK', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
-            '3/6/12 BULAN', ]
+            '3/6/12 BULAN', 'AREA' ]
     col_ba = [x for x in col_ba if x not in no_date]
 
     ### apply datetime to selected variable
@@ -2532,7 +2582,7 @@ def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
                 'Others'
                 ]
 
-    df_diff_ba = df_ba[['NAMA KAPAL', 'NAMA PEMILIK']+diff_ba].copy()
+    df_diff_ba = df_ba[['NAMA KAPAL', 'NAMA PEMILIK', 'AREA']+diff_ba].copy()
 
     # Add new variable for remaining days
     diff_ba_name = ['Nationality & Tonnage Remain Days', 
@@ -2576,6 +2626,13 @@ def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
             'Others':'Others',
         }, inplace=True)
     
+    # subset berdasarkan company (Nama Pemilik) and area for BARGE
+    filtered_df_ba = df_diff_ba.copy()
+    if ba_value_company:
+        filtered_df_ba = filtered_df_ba[filtered_df_ba['NAMA PEMILIK'] == ba_value_company]
+    if value_area:
+        filtered_df_ba = filtered_df_ba[filtered_df_ba['AREA'] == value_area]
+    
     ######################
     # CTS
     ######################
@@ -2586,7 +2643,7 @@ def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
     col = list(col)
 
     no_date_cts = ['NO', 'NAMA KAPAL', 'NAMA PEMILIK', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
-            '3/6/12 BULAN', 'SPESIAL SURVEY']
+            '3/6/12 BULAN', 'SPESIAL SURVEY', 'AREA']
     col = [x for x in col if x not in no_date_cts]
 
     ### apply datetime to selected variable
@@ -2620,7 +2677,7 @@ def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
                 'Others'
                 ]
 
-    df_diff_cts = df_cts[['NAMA KAPAL', 'NAMA PEMILIK']+diff_cts].copy()
+    df_diff_cts = df_cts[['NAMA KAPAL', 'NAMA PEMILIK', 'AREA']+diff_cts].copy()
 
     # Add new variable for remaining days
     diff_cts_name = ['Nationality & Tonnage Remain Days', 
@@ -2670,46 +2727,77 @@ def update_charts(data, tb_value_company, ba_value_company, cts_value_company):
             'Others':'Others',
         }, inplace=True)
     
-    # subset berdasarkan company (Nama Pemilik)
-    pemilik_subset_tb = {}
-    for pemilik in df_diff_tb['NAMA PEMILIK'].unique():
-        subset = df_diff_tb[df_diff_tb['NAMA PEMILIK'] == pemilik]
-        pemilik_subset_tb[pemilik] = subset
+    # subset berdasarkan company (Nama Pemilik) and area for CTS
+    filtered_df_cts = df_diff_cts.copy()
+    if cts_value_company:
+        filtered_df_cts = filtered_df_cts[filtered_df_cts['NAMA PEMILIK'] == cts_value_company]
+    if value_area:
+        filtered_df_cts = filtered_df_cts[filtered_df_cts['AREA'] == value_area]
     
-    pemilik_subset_ba = {}
-    for pemilik in df_diff_ba['NAMA PEMILIK'].unique():
-        subset = df_diff_ba[df_diff_ba['NAMA PEMILIK'] == pemilik]
-        pemilik_subset_ba[pemilik] = subset
+    # # subset berdasarkan company (Nama Pemilik)
+    # pemilik_subset_tb = {}
+    # for pemilik in df_diff_tb['NAMA PEMILIK'].unique():
+    #     subset = df_diff_tb[df_diff_tb['NAMA PEMILIK'] == pemilik]
+    #     pemilik_subset_tb[pemilik] = subset
+    
+    # pemilik_subset_ba = {}
+    # for pemilik in df_diff_ba['NAMA PEMILIK'].unique():
+    #     subset = df_diff_ba[df_diff_ba['NAMA PEMILIK'] == pemilik]
+    #     pemilik_subset_ba[pemilik] = subset
 
-    pemilik_subset_cts = {}
-    for pemilik in df_diff_cts['NAMA PEMILIK'].unique():
-        subset = df_diff_cts[df_diff_cts['NAMA PEMILIK'] == pemilik]
-        pemilik_subset_cts[pemilik] = subset
+    # pemilik_subset_cts = {}
+    # for pemilik in df_diff_cts['NAMA PEMILIK'].unique():
+    #     subset = df_diff_cts[df_diff_cts['NAMA PEMILIK'] == pemilik]
+    #     pemilik_subset_cts[pemilik] = subset
     
     condition = ['Ok', 'Alerts', 'Expired']
     
-    return bar_plot(count_nat_tonnage_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), nat_tonnage_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
-            bar_plot(count_solas_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), solas_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
-            bar_plot(count_pollution_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), pollution_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
-            bar_plot(count_class_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), class_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
-            bar_plot(count_insurance_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), insurance_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
-            bar_plot(count_lsa_ffa_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), lsa_ffa_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
-            bar_plot(count_health_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), health_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
-            bar_plot(count_others_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), others_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
-            bar_plot(count_nat_tonnage_classify(df_diff_ba[df_diff_ba['NAMA PEMILIK'] == ba_value_company]), condition), nat_tonnage_classify(pemilik_subset_ba[ba_value_company]).to_dict('records'),\
-            bar_plot(count_solas_classify(df_diff_ba[df_diff_ba['NAMA PEMILIK'] == ba_value_company]), condition), solas_classify(pemilik_subset_ba[ba_value_company]).to_dict('records'),\
-            bar_plot(count_class_classify(df_diff_ba[df_diff_ba['NAMA PEMILIK'] == ba_value_company]), condition), class_classify(pemilik_subset_ba[ba_value_company]).to_dict('records'),\
-            bar_plot(count_insurance_classify(df_diff_ba[df_diff_ba['NAMA PEMILIK'] == ba_value_company]), condition), insurance_classify(pemilik_subset_ba[ba_value_company]).to_dict('records'),\
-            bar_plot(count_health_classify(df_diff_ba[df_diff_ba['NAMA PEMILIK'] == ba_value_company]), condition), health_classify(pemilik_subset_ba[ba_value_company]).to_dict('records'),\
-            bar_plot(count_others_classify(df_diff_ba[df_diff_ba['NAMA PEMILIK'] == ba_value_company]), condition), others_classify(pemilik_subset_ba[ba_value_company]).to_dict('records'),\
-            bar_plot(count_nat_tonnage_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), nat_tonnage_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
-            bar_plot(count_solas_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), solas_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
-            bar_plot(count_pollution_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), pollution_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
-            bar_plot(count_class_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), class_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
-            bar_plot(count_insurance_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), insurance_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
-            bar_plot(count_lsa_ffa_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), lsa_ffa_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
-            bar_plot(count_health_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), health_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
-            bar_plot(count_others_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), others_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
+    # return bar_plot(count_nat_tonnage_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), nat_tonnage_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
+    #         bar_plot(count_solas_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), solas_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
+    #         bar_plot(count_pollution_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), pollution_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
+    #         bar_plot(count_class_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), class_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
+    #         bar_plot(count_insurance_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), insurance_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
+    #         bar_plot(count_lsa_ffa_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), lsa_ffa_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
+    #         bar_plot(count_health_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), health_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
+    #         bar_plot(count_others_classify(df_diff_tb[df_diff_tb['NAMA PEMILIK'] == tb_value_company]), condition), others_classify(pemilik_subset_tb[tb_value_company]).to_dict('records'),\
+    #         bar_plot(count_nat_tonnage_classify(df_diff_ba[df_diff_ba['NAMA PEMILIK'] == ba_value_company]), condition), nat_tonnage_classify(pemilik_subset_ba[ba_value_company]).to_dict('records'),\
+    #         bar_plot(count_solas_classify(df_diff_ba[df_diff_ba['NAMA PEMILIK'] == ba_value_company]), condition), solas_classify(pemilik_subset_ba[ba_value_company]).to_dict('records'),\
+    #         bar_plot(count_class_classify(df_diff_ba[df_diff_ba['NAMA PEMILIK'] == ba_value_company]), condition), class_classify(pemilik_subset_ba[ba_value_company]).to_dict('records'),\
+    #         bar_plot(count_insurance_classify(df_diff_ba[df_diff_ba['NAMA PEMILIK'] == ba_value_company]), condition), insurance_classify(pemilik_subset_ba[ba_value_company]).to_dict('records'),\
+    #         bar_plot(count_health_classify(df_diff_ba[df_diff_ba['NAMA PEMILIK'] == ba_value_company]), condition), health_classify(pemilik_subset_ba[ba_value_company]).to_dict('records'),\
+    #         bar_plot(count_others_classify(df_diff_ba[df_diff_ba['NAMA PEMILIK'] == ba_value_company]), condition), others_classify(pemilik_subset_ba[ba_value_company]).to_dict('records'),\
+    #         bar_plot(count_nat_tonnage_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), nat_tonnage_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
+    #         bar_plot(count_solas_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), solas_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
+    #         bar_plot(count_pollution_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), pollution_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
+    #         bar_plot(count_class_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), class_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
+    #         bar_plot(count_insurance_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), insurance_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
+    #         bar_plot(count_lsa_ffa_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), lsa_ffa_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
+    #         bar_plot(count_health_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), health_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
+    #         bar_plot(count_others_classify(df_diff_cts[df_diff_cts['NAMA PEMILIK'] == cts_value_company]), condition), others_classify(pemilik_subset_cts[cts_value_company]).to_dict('records'),\
+
+    return bar_plot(count_nat_tonnage_classify(filtered_df_tb), condition), nat_tonnage_classify(filtered_df_tb).to_dict('records'), \
+           bar_plot(count_solas_classify(filtered_df_tb), condition), solas_classify(filtered_df_tb).to_dict('records'), \
+           bar_plot(count_pollution_classify(filtered_df_tb), condition), pollution_classify(filtered_df_tb).to_dict('records'), \
+           bar_plot(count_class_classify(filtered_df_tb), condition), class_classify(filtered_df_tb).to_dict('records'), \
+           bar_plot(count_insurance_classify(filtered_df_tb), condition), insurance_classify(filtered_df_tb).to_dict('records'), \
+           bar_plot(count_lsa_ffa_classify(filtered_df_tb), condition), lsa_ffa_classify(filtered_df_tb).to_dict('records'), \
+           bar_plot(count_health_classify(filtered_df_tb), condition), health_classify(filtered_df_tb).to_dict('records'), \
+           bar_plot(count_others_classify(filtered_df_tb), condition), others_classify(filtered_df_tb).to_dict('records'), \
+           bar_plot(count_nat_tonnage_classify(filtered_df_ba), condition), nat_tonnage_classify(filtered_df_ba).to_dict('records'), \
+           bar_plot(count_solas_classify(filtered_df_ba), condition), solas_classify(filtered_df_ba).to_dict('records'), \
+           bar_plot(count_class_classify(filtered_df_ba), condition), class_classify(filtered_df_ba).to_dict('records'), \
+           bar_plot(count_insurance_classify(filtered_df_ba), condition), insurance_classify(filtered_df_ba).to_dict('records'), \
+           bar_plot(count_health_classify(filtered_df_ba), condition), health_classify(filtered_df_ba).to_dict('records'), \
+           bar_plot(count_others_classify(filtered_df_ba), condition), others_classify(filtered_df_ba).to_dict('records'), \
+           bar_plot(count_nat_tonnage_classify(filtered_df_cts), condition), nat_tonnage_classify(filtered_df_cts).to_dict('records'), \
+           bar_plot(count_solas_classify(filtered_df_cts), condition), solas_classify(filtered_df_cts).to_dict('records'), \
+           bar_plot(count_pollution_classify(filtered_df_cts), condition), pollution_classify(filtered_df_cts).to_dict('records'), \
+           bar_plot(count_class_classify(filtered_df_cts), condition), class_classify(filtered_df_cts).to_dict('records'), \
+           bar_plot(count_insurance_classify(filtered_df_cts), condition), insurance_classify(filtered_df_cts).to_dict('records'), \
+           bar_plot(count_lsa_ffa_classify(filtered_df_cts), condition), lsa_ffa_classify(filtered_df_cts).to_dict('records'), \
+           bar_plot(count_health_classify(filtered_df_cts), condition), health_classify(filtered_df_cts).to_dict('records'), \
+           bar_plot(count_others_classify(filtered_df_cts), condition), others_classify(filtered_df_cts).to_dict('records')
+
                       
 ######################
 # Plot Function
@@ -2721,7 +2809,9 @@ def nat_tonnage_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
 
-    if len(df)<2:
+    if df.empty:
+        return alerts  # Return an empty DataFrame if the input is empty
+    elif len(df)<2:
         if df['Nationality & Tonnage Remain Days'].iloc[0] < 30 :
             alerts = alerts.append({'Vessel': df.iloc[0][0],
                                     'Owner': df.iloc[0][1],
@@ -2757,7 +2847,9 @@ def count_nat_tonnage_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
     
-    if len(df)<2:
+    if df.empty:
+        return [len(ok), len(alerts), len(expired)]
+    elif len(df)<2:
         if df['Nationality & Tonnage Remain Days'].iloc[0] < 0 :
             expired = expired.append({'Vessel': df.iloc[0][0]}, ignore_index=True)
         elif df['Nationality & Tonnage Remain Days'].iloc[0] < 30 :
@@ -2782,7 +2874,9 @@ def solas_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
 
-    if len(df)<2:
+    if df.empty:
+        return alerts  # Return an empty DataFrame if the input is empty
+    elif len(df)<2:
         if df['SOLAS Remain Days'].iloc[0] < 30 :
             alerts = alerts.append({'Vessel': df.iloc[0][0],
                                     'Owner': df.iloc[0][1],
@@ -2818,7 +2912,9 @@ def count_solas_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
 
-    if len(df)<2:
+    if df.empty:
+        return [len(ok), len(alerts), len(expired)]
+    elif len(df)<2:
         if df['SOLAS Remain Days'].iloc[0] < 0 :
             expired = expired.append({'Vessel': df.iloc[0][0]}, ignore_index=True)
         elif df['SOLAS Remain Days'].iloc[0] < 30 :
@@ -2843,7 +2939,9 @@ def pollution_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
 
-    if len(df)<2:
+    if df.empty:
+        return alerts  # Return an empty DataFrame if the input is empty
+    elif len(df)<2:
         if df['Pollution Remain Days'].iloc[0] < 30 :
             alerts = alerts.append({'Vessel': df.iloc[0][0],
                                     'Owner': df.iloc[0][1],
@@ -2879,7 +2977,9 @@ def count_pollution_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
 
-    if len(df)<2:
+    if df.empty:
+        return [len(ok), len(alerts), len(expired)]
+    elif len(df)<2:
         if df['Pollution Remain Days'].iloc[0] < 0 :
             expired = expired.append({'Vessel': df.iloc[0][0]}, ignore_index=True)
         elif df['Pollution Remain Days'].iloc[0] < 30 :
@@ -2905,7 +3005,9 @@ def class_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
 
-    if len(df)<2:
+    if df.empty:
+        return alerts  # Return an empty DataFrame if the input is empty
+    elif len(df)<2:
         if df['Class Remain Days'].iloc[0] < 30 :
             alerts = alerts.append({'Vessel': df.iloc[0][0],
                                     'Owner': df.iloc[0][1],
@@ -2942,7 +3044,9 @@ def count_class_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
 
-    if len(df)<2:
+    if df.empty:
+        return [len(ok), len(alerts), len(expired)]
+    elif len(df)<2:
         if df['Class Remain Days'].iloc[0] < 0 :
             expired = expired.append({'Vessel': df.iloc[0][0]}, ignore_index=True)
         elif df['Class Remain Days'].iloc[0] < 30 :
@@ -2967,7 +3071,9 @@ def insurance_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
 
-    if len(df)<2:
+    if df.empty:
+        return alerts  # Return an empty DataFrame if the input is empty
+    elif len(df)<2:
         if df['Insurance Remain Days'].iloc[0] < 30 :
             alerts = alerts.append({'Vessel': df.iloc[0][0],
                                     'Owner': df.iloc[0][1],
@@ -3004,7 +3110,9 @@ def count_insurance_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
 
-    if len(df)<2:
+    if df.empty:
+        return [len(ok), len(alerts), len(expired)]
+    elif len(df)<2:
         if df['Insurance Remain Days'].iloc[0] < 0 :
             expired = expired.append({'Vessel': df.iloc[0][0]}, ignore_index=True)
         elif df['Insurance Remain Days'].iloc[0] < 30 :
@@ -3029,7 +3137,9 @@ def lsa_ffa_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
 
-    if len(df)<2:
+    if df.empty:
+        return alerts  # Return an empty DataFrame if the input is empty
+    elif len(df)<2:
         if df['LSA & FFA Remain Days'].iloc[0] < 30 :
             alerts = alerts.append({'Vessel': df.iloc[0][0],
                                     'Owner': df.iloc[0][1],
@@ -3066,7 +3176,9 @@ def count_lsa_ffa_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
 
-    if len(df)<2:
+    if df.empty:
+        return [len(ok), len(alerts), len(expired)]
+    elif len(df)<2:
         if df['LSA & FFA Remain Days'].iloc[0] < 0 :
             expired = expired.append({'Vessel': df.iloc[0][0]}, ignore_index=True)
         elif df['LSA & FFA Remain Days'].iloc[0] < 30 :
@@ -3091,7 +3203,9 @@ def health_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
 
-    if len(df)<2:
+    if df.empty:
+        return alerts  # Return an empty DataFrame if the input is empty
+    elif len(df)<2:
         if df['Health Remain Days'].iloc[0] < 30 :
             alerts = alerts.append({'Vessel': df.iloc[0][0],
                                     'Owner': df.iloc[0][1],
@@ -3128,7 +3242,9 @@ def count_health_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
 
-    if len(df)<2:
+    if df.empty:
+        return [len(ok), len(alerts), len(expired)]
+    elif len(df)<2:
         if df['Health Remain Days'].iloc[0] < 0 :
             expired = expired.append({'Vessel': df.iloc[0][0]}, ignore_index=True)
         elif df['Health Remain Days'].iloc[0] < 30 :
@@ -3153,7 +3269,9 @@ def others_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
 
-    if len(df)<2:
+    if df.empty:
+        return alerts  # Return an empty DataFrame if the input is empty
+    elif len(df)<2:
         if df['Others Remain Days'].iloc[0] < 30 :
             alerts = alerts.append({'Vessel': df.iloc[0][0],
                                     'Owner': df.iloc[0][1],
@@ -3190,7 +3308,9 @@ def count_others_classify(df):
     alerts = pd.DataFrame()
     ok = pd.DataFrame()
 
-    if len(df)<2:
+    if df.empty:
+        return [len(ok), len(alerts), len(expired)]
+    elif len(df)<2:
         if df['Others Remain Days'].iloc[0] < 0 :
             expired = expired.append({'Vessel': df.iloc[0][0]}, ignore_index=True)
         elif df['Others Remain Days'].iloc[0] < 30 :

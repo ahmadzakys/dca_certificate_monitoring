@@ -22,7 +22,7 @@ layout = html.Div([
                 html.Br(),
                         html.P(children=html.Strong('MONITORING CERTIFICATE'), 
                                style={'textAlign': 'center', 'fontSize': 27, 'background-color':'#F1F4F4','color':'#242947','font-family':'Verdana'}),
-                html.Div(dcc.Dropdown(
+                html.Div([dcc.Dropdown(
                             id='company-name',
                             options=[
                                 {'label': 'PT. DCA', 'value': 'PT. DCA'},
@@ -43,10 +43,23 @@ layout = html.Div([
                                 ],
                             value='PT. DCA',
                             style={
-                                'width':'97.5%',
-                                'paddingLeft':'4%',
+                                'width':'95%',
+                                'paddingLeft':'2.5%',
                                 }
-                        )),
+                        ),
+                        dcc.Dropdown(
+                            id='area-name',
+                            options=[
+                                {'label': 'BERAU', 'value': 'BERAU'},
+                                {'label': 'NON-BERAU', 'value': 'NON-BERAU'},
+                                ],
+                            value='BERAU',
+                            style={
+                                'width':'95%',
+                                'paddingLeft':'2.5%',
+                                }
+                        )
+                        ], style={'display': 'flex', 'flex-direction': 'row', 'gap': '10px'}),
                 html.Br(),
                 dbc.Row([
                     html.Div(dash_table.DataTable(
@@ -202,9 +215,10 @@ layout = html.Div([
     [
     Input('store', 'data'),
     Input('company-name', 'value'),
+    Input('area-name', 'value')
     ]
 )
-def update_charts(data, value_company):
+def update_charts(data, value_company, value_area):
     ######################
     # Pre Processing
     ######################
@@ -217,7 +231,7 @@ def update_charts(data, value_company):
     col = list(col)
 
     no_date = ['NO', 'NAMA KAPAL', 'NAMA PEMILIK', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
-            '3/6/12 BULAN', ]
+            '3/6/12 BULAN', 'AREA']
     col = [x for x in col if x not in no_date]
 
     ### apply datetime to selected variable
@@ -226,7 +240,7 @@ def update_charts(data, value_company):
 
     ### remove unnecessary variable
     col_del = ['NO', 'NAMA PEMILIK', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)',
-            '3/6/12 BULAN', 'NOTA DINAS 1', 'NOTA DINAS 2']
+            '3/6/12 BULAN', 'NOTA DINAS 1', 'NOTA DINAS 2', 'AREA']
     col_stay = [x for x in df_tb.columns if x not in col_del]
 
     ### set 'NAMA KAPAL' as index
@@ -255,7 +269,8 @@ def update_charts(data, value_company):
     
     df_tb_status = df_tb_status.reset_index()
     df_tb_status['NAMA PEMILIK'] = df_tb_c['NAMA PEMILIK']
-    
+    df_tb_status['AREA'] = df_tb_c['AREA']
+
     ######################
     # Barge
     ######################
@@ -267,7 +282,7 @@ def update_charts(data, value_company):
     col_ba = list(col_ba)
 
     no_date = ['NO', 'NAMA KAPAL', 'NAMA PEMILIK', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
-            '3/6/12 BULAN', ]
+            '3/6/12 BULAN', 'AREA']
     col_ba = [x for x in col_ba if x not in no_date]
 
     ### apply datetime to selected variable
@@ -276,7 +291,7 @@ def update_charts(data, value_company):
 
     ### remove unnecessary variable
     col_del_ba = ['NO', 'NAMA PEMILIK','YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)',
-                  '3/6/12 BULAN', 'NOTA DINAS 1', 'NOTA DINAS 2']
+                  '3/6/12 BULAN', 'NOTA DINAS 1', 'NOTA DINAS 2', 'AREA']
     col_stay_ba = [x for x in df_ba.columns if x not in col_del_ba]
 
     ### set 'NAMA KAPAL' as index
@@ -303,6 +318,7 @@ def update_charts(data, value_company):
                                                         '🔲' if pd.isna(x) else '✔️')))
     df_ba_status = df_ba_status.reset_index()
     df_ba_status['NAMA PEMILIK'] = df_ba_c['NAMA PEMILIK']
+    df_ba_status['AREA'] = df_ba_c['AREA']
     
     ######################
     # CTS
@@ -314,7 +330,7 @@ def update_charts(data, value_company):
     col = list(col)
 
     no_date_cts = ['NO', 'NAMA KAPAL', 'NAMA PEMILIK', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
-            '3/6/12 BULAN', 'SPESIAL SURVEY']
+            '3/6/12 BULAN', 'SPESIAL SURVEY', 'AREA']
     col = [x for x in col if x not in no_date_cts]
 
     ### apply datetime to selected variable
@@ -325,7 +341,7 @@ def update_charts(data, value_company):
     col_del_cts = ['NO', 'NAMA PEMILIK','INTERMEDATE SURVEY','SPESIAL SURVEY',"INTERMEDATE SURVEY2",'SPESIAL SURVEY2','INTERMEDATE SURVEY3',
             'SPESIAL SURVEY3', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)',
             '3/6/12 BULAN', 'NEXT RENEWAL SYABANDAR','NOTA DINAS 1', 'NOTA DINAS 2',
-            'NEXT ANNUAL', 'REMOVAL OF WRECKS1', 'HULL & MACHINE', 'CERTIFICATE DOCUMENT OF COMPLAINCE', ]
+            'NEXT ANNUAL', 'REMOVAL OF WRECKS1', 'HULL & MACHINE', 'CERTIFICATE DOCUMENT OF COMPLAINCE', 'AREA']
     col_stay_cts = [x for x in df_cts.columns if x not in col_del_cts]
 
     ### set 'NAMA KAPAL' as index
@@ -354,6 +370,7 @@ def update_charts(data, value_company):
                                                         '🔲' if pd.isna(x) else '✔️')))
     df_cts_status = df_cts_status.reset_index()
     df_cts_status['NAMA PEMILIK'] = df_cts_c['NAMA PEMILIK']
+    df_cts_status['AREA'] = df_cts_c['AREA']
 
     # ######################
     # # OGV
@@ -418,7 +435,8 @@ def update_charts(data, value_company):
                                 'SERTIFIKAT JAMINAN GANTI RUGI PENCEMARAN MINYAK',
                                 'SERTIFIKAT PEMERIKSAAN RAKIT PENYELAMATAN (CERTIFICATE OF LIFERAFT INSPECTION)',
                                 'SERTIFIKAT BEBAS TINDAKAN SANITASI KAPAL (SHIP SANITATION CONTROL EXEMPTON CERTIFICATE)',
-                                'Others'
+                                'Others',
+                                'AREA'
                                 ]]
     df_tb_simple.rename(columns={
         'SURAT LAUT/ PAS TAHUNAN (CERTIFICATE OF NATIONALITY)':'NATIONALITY & TONNAGE',
@@ -439,7 +457,8 @@ def update_charts(data, value_company):
                                 'NEXT ANNUAL',
                                 'SERTIFIKAT ASURANSI (CERTIFICATE OF INSURANCE)',
                                 'SERTIFIKAT BEBAS TINDAKAN SANITASI KAPAL (SHIP SANITATION CONTROL EXEMPTON CERTIFICATE)',
-                                'Others'
+                                'Others',
+                                'AREA'
                                 ]]
     df_ba_simple.rename(columns={
         'SURAT LAUT/ PAS TAHUNAN (CERTIFICATE OF NATIONALITY)':'NATIONALITY & TONNAGE',
@@ -462,7 +481,8 @@ def update_charts(data, value_company):
                                 'SERTIFIKAT BEBAS TINDAKAN SANITASI KAPAL (SHIP SANITATION CONTROL EXEMPTON CERTIFICATE)',
                                 'INTERNATIONAL SHIP SECURITY CERTIFICATE',
                                 'SAFETY MANAGEMENT CERTIFICATE',
-                                'Others'
+                                'Others',
+                                'AREA'
                                 ]]
     df_cts_simple.rename(columns={
         'SURAT LAUT/ PAS TAHUNAN (CERTIFICATE OF NATIONALITY)':'NATIONALITY & TONNAGE',
@@ -509,9 +529,24 @@ def update_charts(data, value_company):
     data.fillna({'NATIONALITY & TONNAGE':'🔲', 'SOLAS':'🔲', 'POLLUTION':'🔲', 'CLASS':'🔲', 'INSURANCE':'🔲', 'LSA & FFA':'🔲', 'HEALTH':'🔲', 'ISSC':'🔲', 'SMC':'🔲',
                  }, inplace=True)
     data = data.reset_index()
+
+    filtered_data = data.copy()
+
+    if value_company:
+        filtered_data = filtered_data[filtered_data['NAMA PEMILIK'] == value_company]
+
+    if value_area:
+        # Ensure 'AREA' is in the columns before filtering
+        if 'AREA' in filtered_data.columns:
+            filtered_data = filtered_data[filtered_data['AREA'] == value_area]
+        else:
+            print("Error: 'AREA' column not found in filtered_data") # For debugging
+
+    data_dashboard = [filtered_data.to_dict('records')]
         
     ## DataFrame to dash table
-    data_dashboard = [data[data['NAMA PEMILIK'] == value_company].to_dict('records')]
+    # data_dashboard = [data[data['NAMA PEMILIK'] == value_company].to_dict('records')]
+
     # tooltip_table_dash = tooltip_table(data)
     
     return data_dashboard

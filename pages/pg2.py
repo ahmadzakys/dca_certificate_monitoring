@@ -335,7 +335,7 @@ def update_charts(data, value_tb, value_ba, value_cts,):
     col = list(col)
 
     no_date = ['NO', 'NAMA KAPAL', 'NAMA PEMILIK', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)', 
-            '3/6/12 BULAN', ]
+            '3/6/12 BULAN', 'AREA']
     col = [x for x in col if x not in no_date]
 
     ### apply datetime to selected variable
@@ -344,7 +344,7 @@ def update_charts(data, value_tb, value_ba, value_cts,):
 
     ### remove unnecessary variable
     col_del = ['NO', 'NAMA PEMILIK', 'YEARD OF BUILD', 'SURAT UKUR INTERNATIONAL (INTERNATIONAL TONNAGE CERTIFICATE)',
-            '3/6/12 BULAN', 'NOTA DINAS 1', 'NOTA DINAS 2']
+            '3/6/12 BULAN', 'NOTA DINAS 1', 'NOTA DINAS 2', 'AREA']
     col_stay = [x for x in df_tb.columns if x not in col_del]
 
     ### set 'NAMA KAPAL' as index
