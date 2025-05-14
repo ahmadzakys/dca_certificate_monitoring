@@ -42,6 +42,9 @@ layout = html.Div([
                                 {'label': 'PT. AAS', 'value': 'PT. AAS'},
                                 {'label': 'PT. MAP', 'value': 'PT. MAP'},
                                 {'label': 'PT. HSL', 'value': 'PT. HSL'},
+                                {'label': 'PT. KSS', 'value': 'PT. KSS'},
+                                {'label': 'PT. PSP', 'value': 'PT. PSP'},
+
                             ],
                             value='PT. DCA',
                             style={
@@ -1516,6 +1519,7 @@ layout = html.Div([
                                 {'label': 'PT. PSS', 'value': 'PT. PSS'},
                                 {'label': 'PT. RVI', 'value': 'PT. RVI'},
                                 {'label': 'PT. KMJ', 'value': 'PT. KMJ'},
+                                {'label': 'PT. PSP', 'value': 'PT. PSP'},
                             ],
                             value='PT. ABL',
                             style={
